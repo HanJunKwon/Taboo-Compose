@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TabooCompose"
 include(":app")
- 
+include(":designsystem")

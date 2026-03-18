@@ -1,16 +1,21 @@
 package com.kwon.taboo.compose
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kwon.taboo.compose.designsystem.button.TabooButton
 import com.kwon.taboo.compose.ui.theme.TabooComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,9 +37,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
+    TabooButton(
+        onClick = {
+            Log.d(">>>", "TabooButton Click")
+        },
+        modifier = Modifier.fillMaxWidth(),
+        text = { Text ("asdasdasd") },
+        enabled = false
     )
 }
 
