@@ -7,10 +7,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.input.TextFieldState
@@ -19,17 +18,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
+import com.kwon.taboo.compose.designsystem.theme.TabooBlack600
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
+import com.kwon.taboo.compose.designsystem.theme.TabooGray300
 import com.kwon.taboo.compose.designsystem.theme.TabooGray400
 import com.kwon.taboo.compose.designsystem.theme.TabooGray600
 import com.kwon.taboo.compose.designsystem.theme.TabooGray800
@@ -55,8 +59,11 @@ fun TabooTextField(
             enabled
         )
         TabooTextFieldVariant.LINE -> TabooLineTextField(
+            state,
             title,
-            placeHolder
+            placeHolder,
+            colors,
+            enabled
         )
     }
 }
@@ -101,7 +108,7 @@ fun TabooBoxTextField(
                             Text(
                                 text = placeHolder,
                                 color = colors.placeHolderColor,
-                                style = TabooTextFieldDefaults.placeHolderTextStyle()
+                                style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.BOX)
                             )
                         }
 
@@ -109,7 +116,7 @@ fun TabooBoxTextField(
                         innerTextField()
                     }
                 },
-                textStyle = TabooTextFieldDefaults.textFieldTextStyle().copy(
+                textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.BOX).copy(
                     color = colors.textColor(enabled, isFocused)
                 ),
                 enabled = enabled,
@@ -121,10 +128,64 @@ fun TabooBoxTextField(
 
 @Composable
 fun TabooLineTextField(
+    state: TextFieldState,
     title: String,
-    placeHolder: String?
+    placeHolder: String?,
+    colors: TabooTextFieldColors = TabooTextFieldDefaults.colors(),
+    enabled: Boolean
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused = interactionSource.collectIsFocusedAsState().value
 
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            text = title,
+            color = colors.titleColor(enabled, isFocused),
+            style = TabooTextFieldDefaults.titleTextStyle()
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .drawBehind {
+                    drawLine(
+                        color = TabooBlack600,
+                        start = Offset(x = 0f, y = size.height),
+                        end = Offset(x = size.width, y = size.height),
+                        strokeWidth = 2f,
+                        colorFilter = ColorFilter.tint(color = colors.lineColor(enabled, isFocused))
+                    )
+                }
+                .padding(top = 7.dp, bottom = 9.dp)
+        ) {
+            BasicTextField(
+                state = state,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+                decorator = { innerTextField ->
+                    if (state.text.isEmpty()) {
+
+                        if (placeHolder != null) {
+                            Text(
+                                text = placeHolder,
+                                color = colors.placeHolderColor,
+                                style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.LINE)
+                            )
+                        }
+
+                    } else {
+                        innerTextField()
+                    }
+                },
+                textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.LINE).copy(
+                    color = colors.textColor(enabled, isFocused)
+                ),
+                enabled = enabled,
+                interactionSource = interactionSource
+            )
+        }
+    }
 }
 
 enum class TabooTextFieldVariant {
@@ -138,22 +199,50 @@ object TabooTextFieldDefaults {
     fun titleTextStyle(): TextStyle = TextStyle(
         fontFamily = TabooFontFamily,
         fontSize = 12.sp,
-        fontWeight = FontWeight.SemiBold
+        fontWeight = FontWeight.Normal
     )
 
     @Composable
-    fun placeHolderTextStyle(): TextStyle = TextStyle(
-        fontFamily = TabooFontFamily,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Medium
-    )
+    fun placeHolderTextStyle(variant: TabooTextFieldVariant): TextStyle {
+        return when (variant) {
+            TabooTextFieldVariant.BOX -> {
+                TextStyle(
+                    fontFamily = TabooFontFamily,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            TabooTextFieldVariant.LINE -> {
+                TextStyle(
+                    fontFamily = TabooFontFamily,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+    }
 
     @Composable
-    fun textFieldTextStyle(): TextStyle = TextStyle(
-        fontFamily = TabooFontFamily,
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Medium
-    )
+    fun textFieldTextStyle(variant: TabooTextFieldVariant): TextStyle {
+        return when (variant) {
+            TabooTextFieldVariant.BOX -> {
+                TextStyle(
+                    fontFamily = TabooFontFamily,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            TabooTextFieldVariant.LINE -> {
+                TextStyle(
+                    fontFamily = TabooFontFamily,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+    }
 
     @Composable
     fun colors() = TabooTextFieldColors(
@@ -165,7 +254,10 @@ object TabooTextFieldDefaults {
         disabledTextColor = defaultDisabledTextColor(),
         placeHolderColor = defaultPlaceHolderColor(),
         contentColor = defaultContentColor(),
-        disabledContentColor = defaultDisabledContentColor()
+        disabledContentColor = defaultDisabledContentColor(),
+        lineColor = defaultLineColor(),
+        focusedLineColor = defaultFocusedLineColor(),
+        disabledLineColor = defaultDisabledLineColor()
     )
 
     @Composable
@@ -194,6 +286,15 @@ object TabooTextFieldDefaults {
 
     @Composable
     private fun defaultDisabledContentColor(): Color = if (isSystemInDarkTheme()) TabooGray800 else TabooGray100
+
+    @Composable
+    private fun defaultLineColor(): Color = TabooGray100
+
+    @Composable
+    private fun defaultFocusedLineColor(): Color = TabooBlue600
+
+    @Composable
+    private fun defaultDisabledLineColor(): Color = TabooGray100
 }
 
 @ThemePreviews
@@ -202,7 +303,7 @@ fun TabooTextFieldVariantBoxPreviews() {
     TabooTheme {
         TabooBackground {
             Column(
-                modifier = Modifier.padding(10.dp).fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier.padding(10.dp).fillMaxWidth().wrapContentHeight(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
 
             ) {
@@ -220,26 +321,20 @@ fun TabooTextFieldVariantBoxPreviews() {
                     placeHolder = "내용을 입력해주세요.",
                     enabled = false
                 )
-            }
-        }
-    }
-}
-
-@ThemePreviews
-@Composable
-fun TabooTextFieldVariantLinePreviews() {
-    TabooTheme {
-        TabooBackground {
-            Column(
-                modifier = Modifier.padding(10.dp).fillMaxWidth().fillMaxHeight()
-            ) {
-                val textState = rememberTextFieldState(initialText = "")
 
                 TabooTextField(
                     state = textState,
                     variant = TabooTextFieldVariant.LINE,
                     title = "타이틀",
                     placeHolder = "내용을 입력해주세요."
+                )
+
+                TabooTextField(
+                    state = textState,
+                    variant = TabooTextFieldVariant.LINE,
+                    title = "타이틀",
+                    placeHolder = "내용을 입력해주세요.",
+                    enabled = false
                 )
             }
         }

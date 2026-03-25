@@ -11,7 +11,10 @@ data class TabooTextFieldColors(
     val disabledTextColor: Color,
     val placeHolderColor: Color,
     val contentColor: Color,
-    val disabledContentColor: Color
+    val disabledContentColor: Color,
+    val lineColor: Color,
+    val focusedLineColor: Color,
+    val disabledLineColor: Color
 ) {
     fun titleColor(enabled: Boolean, focused: Boolean): Color {
         return if (enabled) {
@@ -34,6 +37,18 @@ data class TabooTextFieldColors(
             }
         } else {
             disabledTextColor
+        }
+    }
+
+    fun lineColor(enabled: Boolean, focused: Boolean): Color {
+        return if (enabled) {
+            if (focused) {
+                focusedLineColor
+            } else {
+                lineColor
+            }
+        } else {
+            disabledLineColor
         }
     }
 }
