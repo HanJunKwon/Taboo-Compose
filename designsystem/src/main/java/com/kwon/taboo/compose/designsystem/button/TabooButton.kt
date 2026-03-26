@@ -9,9 +9,11 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -48,6 +50,7 @@ fun TabooButton(
     Surface(
         modifier = modifier
             .heightIn(50.dp)
+            .wrapContentHeight()
             .clickable(
                 onClick = onClick,
                 enabled = enabled,
@@ -250,6 +253,24 @@ fun TabooOutlineButtonPreview() {
                     modifier = Modifier.fillMaxWidth(),
                     text = { Text(text = "Button") },
                     enabled = false
+                )
+            }
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun TabooButtonPreviews() {
+    TabooTheme {
+        TabooBackground {
+            Surface(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+                TabooButton(
+                    onClick = {
+
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    text = { Text(text = "Button") }
                 )
             }
         }
