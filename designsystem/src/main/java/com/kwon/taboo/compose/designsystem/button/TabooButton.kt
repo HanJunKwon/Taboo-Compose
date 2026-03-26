@@ -72,7 +72,7 @@ fun TabooButton(
     ) {
         Box(
             modifier = Modifier
-                .padding(10.dp),
+                .padding(15.dp),
             contentAlignment = Alignment.Center
         ) {
             text()
