@@ -37,8 +37,6 @@ class MainActivity : ComponentActivity() {
                         name = "Android",
                         modifier = Modifier.padding(innerPadding)
                     )
-
-                    Tab
                 }
             }
         }
