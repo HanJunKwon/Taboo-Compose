@@ -119,6 +119,7 @@ fun TabooSegmentTab(
                                 interactionSource = interactionSource
                             )
                         ,
+                        style = textStyle,
                         textAlign = TextAlign.Center,
                         color = if (selectedIndex == index) segmentTabColors.selectedTextColor else segmentTabColors.unselectedTextColor
                     )
