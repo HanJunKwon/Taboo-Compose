@@ -28,8 +28,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
+import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
+import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue200
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
@@ -54,11 +56,9 @@ fun TabooSwitch(
     Row(
         modifier = Modifier
             .padding(5.dp)
-            .clickable(
-                onClick = { isChecked = !isChecked },
-                indication = ScaleIndication,
-                interactionSource = interactionSource
-            ),
+            .scaleClickable(
+                onClick = { isChecked = !isChecked }
+            )
     ) {
 
         if (content != null) {
@@ -77,14 +77,14 @@ fun TabooSwitch(
                 .padding(3.dp)
                 .background(
                     color = Color.Unspecified,
-                    shape = RoundedCornerShape(15.dp)
+                    shape = TabooShape.ExtraLarge
                 )
             ,
             color = TabooSwitchDefault.defaultContainerColor(
                 isEnabled = isEnabled,
                 isChecked = isChecked
             ),
-            shape = RoundedCornerShape(15.dp)
+            shape = TabooShape.ExtraLarge
         ) {
             Box(
                 modifier = Modifier

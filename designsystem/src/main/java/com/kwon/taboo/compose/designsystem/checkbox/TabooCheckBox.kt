@@ -38,6 +38,7 @@ import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
+import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
@@ -54,19 +55,14 @@ fun TabooCheckBox(
     isChecked: Boolean = false
 ) {
     var isChecked by remember { mutableStateOf(isChecked) }
-
-    val interactionSource = remember { MutableInteractionSource() }
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
-            .clickable(
+            .scaleClickable(
                 onClick = {
                     isChecked = !isChecked
-                },
-                indication = ScaleIndication,
-                interactionSource = interactionSource
+                }
             )
         ,
         verticalAlignment = Alignment.CenterVertically

@@ -21,8 +21,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
+import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
+import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack800
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
 import com.kwon.taboo.compose.designsystem.theme.TabooGray500
@@ -41,27 +43,23 @@ fun TabooIconButton(
     variant: TabooIconButtonVariant = TabooIconButtonVariant.CLEAR,
     backgroundColor: Color = TabooIconButtonDefaults.defaultBackgroundColor(variant)
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-
     Image(
         painter = icon,
         contentDescription = "",
         modifier = modifier
             .background(
                 color = backgroundColor,
-                shape = RoundedCornerShape(10.dp)
+                shape = TabooShape.Medium
             )
             .border(
                 width = 1.dp,
                 color = TabooIconButtonDefaults.defaultBorderColor(variant),
-                shape = RoundedCornerShape(10.dp)
+                shape = TabooShape.Medium
             )
             .padding(6.dp)
-            .clickable(
+            .scaleClickable(
                 onClick = onClick,
-                enabled = enabled,
-                indication = ScaleIndication,
-                interactionSource = interactionSource
+                enabled = enabled
             ),
         colorFilter = iconColorFilter
     )

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
+import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.search.TabooSearchFieldDefaults.defaultBackgroundColor
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack700
@@ -52,7 +53,7 @@ fun TabooSearchField(
         modifier = modifier
             .background(
                 color = defaultBackgroundColor(enabled),
-                shape = RoundedCornerShape(size = 10.dp)
+                shape = TabooShape.Medium
             )
             .widthIn(min = 60.dp)
             .padding(

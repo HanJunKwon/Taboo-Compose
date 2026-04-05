@@ -24,8 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
+import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
+import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue200
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue700
@@ -51,15 +53,10 @@ fun TabooButton(
         modifier = modifier
             .heightIn(50.dp)
             .wrapContentHeight()
-            .clickable(
-                onClick = onClick,
-                enabled = enabled,
-                indication = ScaleIndication,
-                interactionSource = interactionSource
-            ).hoverable(
-                interactionSource = interactionSource
+            .scaleClickable(
+                onClick = onClick
             ),
-        shape = RoundedCornerShape(size = 10.dp),
+        shape = TabooShape.Medium,
         color = colors.containerColor(
             enabled = enabled,
             isPressed = isPressed.value

@@ -39,8 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.TabooBackground
+import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
+import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack800
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
@@ -56,8 +58,6 @@ fun TabooSegmentTab(
     textStyle: TextStyle = TabooSegmentControlDefaults.defaultTextStyle(),
     segmentTabColors: TabooSegmentTabColors = TabooSegmentControlDefaults.defaultSegmentColors()
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     val localDensity = LocalDensity.current
@@ -87,7 +87,7 @@ fun TabooSegmentTab(
                 .offset(x = offsetX, y = 0.dp)
             ,
             color = segmentTabColors.selectorColor,
-            shape = RoundedCornerShape(10.dp)
+            shape = TabooShape.Medium
         ) {}
 
         BoxWithConstraints(
@@ -113,10 +113,8 @@ fun TabooSegmentTab(
                                 vertical = 10.dp,
                                 horizontal = 10.dp
                             )
-                            .clickable(
-                                onClick = { selectedIndex = index },
-                                indication = ScaleIndication,
-                                interactionSource = interactionSource
+                            .scaleClickable(
+                                onClick = { selectedIndex = index }
                             )
                         ,
                         style = textStyle,

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class ScaleNode(
     private val interactionSource: InteractionSource,
-    private val pressScalePercentage: Float = 0.9f,
+    private val pressScalePercentage: Float = 0.95f,
     private val restScalePercentage: Float = 1f
 ): Modifier.Node(), DrawModifierNode {
 
