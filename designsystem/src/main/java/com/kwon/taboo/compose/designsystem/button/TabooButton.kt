@@ -1,8 +1,6 @@
 package com.kwon.taboo.compose.designsystem.button
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
-import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
 import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue200
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600

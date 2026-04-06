@@ -3,16 +3,12 @@ package com.kwon.taboo.compose.designsystem.button
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -23,7 +19,6 @@ import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
-import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
 import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack800
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100

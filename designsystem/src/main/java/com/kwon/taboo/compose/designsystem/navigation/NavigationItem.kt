@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,18 +30,17 @@ import com.kwon.taboo.compose.designsystem.theme.TabooGray700
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
-fun NavigationItem(
+fun RowScope.NavigationItem(
     onClick: () -> Unit,
     icon: Painter,
     text: String,
     colors: NavigationItemColors = NavigationItemDefault.colors(),
-    isSelected: Boolean = false,
-    isSubNavigation: Boolean = false
+    isSelected: Boolean = false
 ) {
     Column(
         modifier = Modifier
             .padding(5.dp)
-            .scaleClickable(onClick = onClick),
+            .scaleClickable(onClick = onClick).weight(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {

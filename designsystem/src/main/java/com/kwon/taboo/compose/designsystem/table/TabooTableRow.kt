@@ -15,15 +15,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack700
-import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooGray500
-import com.kwon.taboo.compose.designsystem.theme.TabooGray600
-import com.kwon.taboo.compose.designsystem.theme.TabooGray700
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable

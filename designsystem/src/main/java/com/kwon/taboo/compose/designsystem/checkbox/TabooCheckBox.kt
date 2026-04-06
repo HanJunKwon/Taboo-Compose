@@ -1,10 +1,6 @@
 package com.kwon.taboo.compose.designsystem.checkbox
 
-import android.widget.Space
-import android.widget.TextView
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
-import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
 import com.kwon.taboo.compose.designsystem.scaleClickable
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
