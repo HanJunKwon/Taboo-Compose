@@ -40,7 +40,7 @@ fun NavigationRow(
                     onBack?.invoke()
                 },
                 modifier = Modifier
-                    .padding(start = 5.dp)
+                    .padding(start = 7.dp)
                     .background(
                         color = iconBackgroundColor,
                         shape = CircleShape

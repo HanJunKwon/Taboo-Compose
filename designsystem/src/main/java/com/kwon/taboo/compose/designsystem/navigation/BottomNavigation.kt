@@ -54,19 +54,25 @@ fun BottomNavigation(
         targetValue = if (isSubNavigation) 100f else 0f
     )
 
+    val backgroundColor = if (isSubNavigation) Color.Unspecified else BottomNavigationDefault.backgroundColor()
+
     Box(
         modifier = modifier
             .padding(animatedMargin)
+            .background(
+                color = backgroundColor
+            )
+            .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .windowInsetsPadding(WindowInsets.navigationBars)
                 .background(
                     color = BottomNavigationDefault.backgroundColor(),
                     shape = RoundedCornerShape(animatedRounded)
-                ),
+                )
+                .padding(vertical = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
