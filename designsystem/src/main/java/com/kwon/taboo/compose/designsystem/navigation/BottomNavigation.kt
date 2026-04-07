@@ -43,7 +43,7 @@ fun BottomNavigation(
     modifier: Modifier = Modifier,
     isSubNavigation: Boolean = false,
     subNavigation: (@Composable RowScope.() -> Unit)? = null,
-    onBack: (() -> Unit)?,
+    onBack: (() -> Unit)? = null,
     content: @Composable RowScope.() -> Unit
 ) {
     val animatedMargin by animateDpAsState(
@@ -62,11 +62,11 @@ fun BottomNavigation(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .windowInsetsPadding(WindowInsets.navigationBars)
                 .background(
                     color = BottomNavigationDefault.backgroundColor(),
                     shape = RoundedCornerShape(animatedRounded)
-                )
-                .windowInsetsPadding(WindowInsets.navigationBars),
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
