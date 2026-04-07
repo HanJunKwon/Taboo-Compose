@@ -1,6 +1,5 @@
 package com.kwon.taboo.compose.designsystem.navigation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
+import com.kwon.taboo.compose.designsystem.button.TabooIconButton
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
 import com.kwon.taboo.compose.designsystem.theme.TabooGray400
@@ -41,6 +42,7 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 @Composable
 fun FloatingNavigation(
     modifier: Modifier = Modifier,
+    onBack: () -> Unit,
     icon: Painter? = null,
     iconBackgroundColor: Color = FloatingNavigationDefault.iconBackgroundColor(),
     iconColorFilter: ColorFilter = FloatingNavigationDefault.iconColorFilter(),
@@ -55,7 +57,7 @@ fun FloatingNavigation(
         ,
         color = FloatingNavigationDefault.backgroundColor(),
         shape = RoundedCornerShape(100),
-        shadowElevation = 3.dp
+        shadowElevation = 2.dp
     ) {
         Row(
             modifier = Modifier.wrapContentWidth()
@@ -63,17 +65,16 @@ fun FloatingNavigation(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (icon != null) {
-                Image(
-                    painter = icon,
-                    contentDescription = "",
+                TabooIconButton(
+                    onClick = onBack,
                     modifier = Modifier
                         .padding(start = 5.dp)
                         .background(
                             color = iconBackgroundColor,
-                            shape = RoundedCornerShape(100)
-                        )
-                        .padding(5.dp),
-                    colorFilter = iconColorFilter
+                            shape = CircleShape
+                        ),
+                    icon = icon,
+                    iconColorFilter = iconColorFilter
                 )
             }
 
@@ -125,6 +126,9 @@ fun FloatingNavigationPreviews() {
                 FloatingNavigation(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     icon = painterResource(R.drawable.ic_arrow_back),
+                    onBack = {
+
+                    }
                 ) {
                     NavigationItem(
                         onClick = {
