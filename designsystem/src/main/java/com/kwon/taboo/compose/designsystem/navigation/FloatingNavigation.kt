@@ -2,9 +2,7 @@ package com.kwon.taboo.compose.designsystem.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -32,11 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
-import com.kwon.taboo.compose.designsystem.button.TabooIconButton
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
-import com.kwon.taboo.compose.designsystem.theme.TabooGray100
-import com.kwon.taboo.compose.designsystem.theme.TabooGray400
-import com.kwon.taboo.compose.designsystem.theme.TabooGray800
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
@@ -44,14 +37,17 @@ fun FloatingNavigation(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
     icon: Painter? = null,
-    iconBackgroundColor: Color = FloatingNavigationDefault.iconBackgroundColor(),
-    iconColorFilter: ColorFilter = FloatingNavigationDefault.iconColorFilter(),
+    iconBackgroundColor: Color = NavigationRowDefault.iconBackgroundColor(),
+    iconColorFilter: ColorFilter = NavigationRowDefault.iconColorFilter(),
     content: @Composable RowScope.() -> Unit
 ) {
     Surface(
         modifier = modifier
             .wrapContentHeight()
             .wrapContentWidth()
+            .background(
+                color = FloatingNavigationDefault.backgroundColor()
+            )
             .padding(10.dp)
             .windowInsetsPadding(WindowInsets.navigationBars)
         ,
@@ -59,45 +55,18 @@ fun FloatingNavigation(
         shape = RoundedCornerShape(100),
         shadowElevation = 2.dp
     ) {
-        Row(
-            modifier = Modifier.wrapContentWidth()
-                .background(color = FloatingNavigationDefault.backgroundColor()),
-            verticalAlignment = Alignment.CenterVertically
+        NavigationRow(
+            backIcon = icon,
+            onBack = onBack,
+            iconBackgroundColor = iconBackgroundColor,
+            iconColorFilter = iconColorFilter
         ) {
-            if (icon != null) {
-                TabooIconButton(
-                    onClick = onBack,
-                    modifier = Modifier
-                        .padding(start = 5.dp)
-                        .background(
-                            color = iconBackgroundColor,
-                            shape = CircleShape
-                        ),
-                    icon = icon,
-                    iconColorFilter = iconColorFilter
-                )
-            }
-
-            Row(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                content()
-            }
+            content()
         }
     }
 }
 
 object FloatingNavigationDefault {
-    @Composable
-    fun iconBackgroundColor(): Color {
-        return if (isSystemInDarkTheme()) TabooGray800 else TabooGray100
-    }
-
-    @Composable
-    fun iconColorFilter(): ColorFilter {
-        return ColorFilter.tint(color = TabooGray400)
-    }
 
     @Composable
     fun backgroundColor(): Color {
