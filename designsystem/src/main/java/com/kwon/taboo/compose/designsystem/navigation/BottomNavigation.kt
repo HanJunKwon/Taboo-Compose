@@ -1,10 +1,11 @@
 package com.kwon.taboo.compose.designsystem.navigation
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,11 +17,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,32 +35,57 @@ import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
+import com.kwon.taboo.compose.designsystem.theme.TabooRed600
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
 fun BottomNavigation(
     modifier: Modifier = Modifier,
+    isSubNavigation: Boolean = false,
+    subNavigation: (@Composable RowScope.() -> Unit)? = null,
+    onBack: (() -> Unit)?,
     content: @Composable RowScope.() -> Unit
 ) {
+    val animatedMargin by animateDpAsState(
+        if (isSubNavigation) 10.dp else 0.dp
+    )
+
+    val animatedRounded by animateFloatAsState(
+        targetValue = if (isSubNavigation) 100f else 0f
+    )
+
     Box(
         modifier = modifier
+            .padding(animatedMargin)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .background(
-                    color = BottomNavigationDefault.backgroundColor()
+                    color = BottomNavigationDefault.backgroundColor(),
+                    shape = RoundedCornerShape(animatedRounded)
                 )
-                .defaultMinSize(
-                    minHeight = 46.dp
-                )
-                .padding(vertical = 3.dp)
                 .windowInsetsPadding(WindowInsets.navigationBars),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            content()
+            if (isSubNavigation) {
+                NavigationRow(
+                    backIcon = painterResource(R.drawable.ic_arrow_back),
+                    onBack = {
+                        onBack?.invoke()
+                    },
+                    iconBackgroundColor = NavigationRowDefault.iconBackgroundColor(),
+                    iconColorFilter = NavigationRowDefault.iconColorFilter(),
+                ) {
+                    if (subNavigation != null) {
+                        subNavigation()
+                    }
+                }
+            } else {
+                content()
+            }
         }
     }
 }
@@ -74,17 +102,22 @@ object BottomNavigationDefault {
 fun BottomNavigationPreviews() {
     TabooTheme() {
         TabooBackground {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .statusBarsPadding()
             ) {
                 var selectedIndex by remember { mutableIntStateOf(0) }
+                var isSubNavigation by remember { mutableStateOf(false) }
+                var subNavigationContent by remember {
+                    mutableStateOf<@Composable RowScope.() -> Unit>({ })
+                }
+
 
                 // 실제 구현할 때는 NavDisplay로 표현하는게 좋을 것 같음.
                 Surface(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)) {
+                    .fillMaxSize()
+                ) {
                     when (selectedIndex) {
                         0 -> HomeScreenExample()
                         1 -> StarScreenExample()
@@ -92,10 +125,18 @@ fun BottomNavigationPreviews() {
                     }
                 }
 
-                BottomNavigation {
+                BottomNavigation(
+                    isSubNavigation = isSubNavigation,
+                    subNavigation = subNavigationContent,
+                    onBack = {
+                        isSubNavigation = false
+                    },
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                ) {
                     NavigationItem(
                         onClick = {
                             selectedIndex = 0
+                            isSubNavigation = false
                         },
                         isSelected = selectedIndex == 0,
                         icon = painterResource(R.drawable.ic_home),
@@ -104,6 +145,32 @@ fun BottomNavigationPreviews() {
                     NavigationItem(
                         onClick = {
                             selectedIndex = 1
+                            isSubNavigation = true
+                            subNavigationContent = {
+                                NavigationItem(
+                                    onClick = {
+
+                                    },
+                                    icon = painterResource(R.drawable.ic_star),
+                                    text = "즐겨찾기 1"
+                                )
+
+                                NavigationItem(
+                                    onClick = {
+
+                                    },
+                                    icon = painterResource(R.drawable.ic_star),
+                                    text = "즐겨찾기 2"
+                                )
+
+                                NavigationItem(
+                                    onClick = {
+
+                                    },
+                                    icon = painterResource(R.drawable.ic_star),
+                                    text = "즐겨찾기 3"
+                                )
+                            }
                         },
                         isSelected = selectedIndex == 1,
                         icon = painterResource(R.drawable.ic_star),
@@ -112,6 +179,7 @@ fun BottomNavigationPreviews() {
                     NavigationItem(
                         onClick = {
                             selectedIndex = 2
+                            isSubNavigation = false
                         },
                         isSelected = selectedIndex == 2,
                         icon = painterResource(R.drawable.ic_favorite),
@@ -125,21 +193,27 @@ fun BottomNavigationPreviews() {
 
 @Composable
 fun HomeScreenExample() {
-    Box() {
+    Box(
+        modifier = Modifier.background(color = TabooRed600)
+    ) {
         Text(text = "HOME")
     }
 }
 
 @Composable
 fun StarScreenExample() {
-    Box() {
+    Box(
+        modifier = Modifier.background(color = TabooRed600)
+    ) {
         Text(text = "STAR")
     }
 }
 
 @Composable
 fun FavoriteScreenExample() {
-    Box() {
+    Box(
+        modifier = Modifier.background(color = TabooRed600)
+    ) {
         Text(text = "FAVORITE")
     }
 }
