@@ -1,6 +1,7 @@
 package com.kwon.taboo.compose.designsystem.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,17 +31,24 @@ import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
+import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
 fun BottomNavigation(
+    modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit
 ) {
-    Surface() {
+    Box(
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .background(
+                    color = BottomNavigationDefault.backgroundColor()
+                )
                 .defaultMinSize(
                     minHeight = 46.dp
                 )
@@ -51,6 +59,13 @@ fun BottomNavigation(
         ) {
             content()
         }
+    }
+}
+
+object BottomNavigationDefault {
+    @Composable
+    fun backgroundColor(): Color {
+        return if (isSystemInDarkTheme()) TabooBlack900 else Color.White
     }
 }
 
