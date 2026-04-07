@@ -10,9 +10,9 @@ import com.kwon.taboo.compose.designsystem.indication.ScaleIndication
 @Composable
 fun Modifier.scaleClickable(
     onClick: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource? = remember { MutableInteractionSource() }
 ): Modifier {
-    val interactionSource = remember { MutableInteractionSource() }
     val scaleIndication = ScaleIndication
 
     return clickable(
