@@ -1,5 +1,6 @@
 package com.kwon.taboo.compose.designsystem.button
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
-import com.kwon.taboo.compose.designsystem.scaleClickable
+import com.kwon.taboo.compose.designsystem.scalePointerInput
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue200
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue700
@@ -49,9 +51,11 @@ fun TabooButton(
         modifier = modifier
             .heightIn(50.dp)
             .wrapContentHeight()
-            .scaleClickable(
-                onClick = onClick
-            ),
+            .scalePointerInput(
+                onClick = onClick,
+                interactionSource = interactionSource
+            )
+        ,
         shape = TabooShape.Medium,
         color = colors.containerColor(
             enabled = enabled,
@@ -261,6 +265,36 @@ fun TabooButtonPreviews() {
                 TabooButton(
                     onClick = {
 
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    text = { Text(text = "Button") }
+                )
+            }
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun TabooButtonLazyPreviews() {
+    TabooTheme {
+        TabooBackground {
+            Surface(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+                LazyColumn() {
+                    items(5) {
+                        TabooButton(
+                            onClick = {
+                                Log.d(">>>", "click")
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            text = { Text(text = "Button") }
+                        )
+                    }
+                }
+
+                TabooButton(
+                    onClick = {
+                        Log.d(">>>", "click")
                     },
                     modifier = Modifier.fillMaxWidth(),
                     text = { Text(text = "Button") }
