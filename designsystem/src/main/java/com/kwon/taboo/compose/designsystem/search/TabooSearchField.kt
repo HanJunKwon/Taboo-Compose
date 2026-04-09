@@ -38,6 +38,7 @@ import com.kwon.taboo.compose.designsystem.theme.TabooGray200
 import com.kwon.taboo.compose.designsystem.theme.TabooGray300
 import com.kwon.taboo.compose.designsystem.theme.TabooGray400
 import com.kwon.taboo.compose.designsystem.theme.TabooGray500
+import com.kwon.taboo.compose.designsystem.theme.TabooGray600
 import com.kwon.taboo.compose.designsystem.theme.TabooGray900
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
@@ -62,9 +63,9 @@ fun TabooSearchField(
         enabled = enabled,
         cursorBrush = TabooSearchFieldDefaults.CursorBrush,
         textStyle = TextStyle(
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             fontFamily = TabooFontFamily,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Normal,
             color = TabooSearchFieldDefaults.defaultTextColor(enabled),
         ),
         decorator = { innerTextFiled ->
@@ -91,9 +92,9 @@ fun TabooSearchField(
                             text = "검색어를 입력해주세요.",
                             color = TabooSearchFieldDefaults.defaultPlaceholderColor(enabled),
                             style = TextStyle(
-                                fontSize = 16.sp,
+                                fontSize = 14.sp,
                                 fontFamily = TabooFontFamily,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Normal
                             )
                         )
                     }
@@ -136,7 +137,7 @@ object TabooSearchFieldDefaults {
         return if (isSystemInDarkTheme()) {
             if (enabled) TabooGray500 else TabooBlack700
         } else {
-            if (enabled) TabooGray400 else TabooGray300
+            if (enabled) TabooGray600 else TabooGray300
         }
     }
 
@@ -154,7 +155,7 @@ object TabooSearchFieldDefaults {
         return if (isSystemInDarkTheme()) {
             if (enabled) TabooGray500 else TabooBlack700
         } else {
-            if (enabled) TabooGray400 else TabooGray300
+            if (enabled) TabooGray500 else TabooGray300
         }
     }
 
