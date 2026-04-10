@@ -30,6 +30,7 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
 fun DotLoading(
+    dotSize: Dp = 10.dp,
     dotColor: Color = Color.White,
     dotSpace: Dp = 8.dp
 ) {
@@ -38,14 +39,27 @@ fun DotLoading(
         horizontalArrangement = Arrangement
             .spacedBy(dotSpace)
     ) {
-        Dot(dotColor = dotColor)
-        Dot(dotColor = dotColor, animationDelay = 80)
-        Dot(dotColor = dotColor, animationDelay = 160)
+        Dot(
+            dotSize = dotSize,
+            dotColor = dotColor
+        )
+
+        Dot(
+            dotSize = dotSize,
+            dotColor = dotColor,
+            animationDelay = 80
+        )
+        Dot(
+            dotSize = dotSize,
+            dotColor = dotColor,
+            animationDelay = 160
+        )
     }
 }
 
 @Composable
 fun Dot(
+    dotSize: Dp = 10.dp,
     dotColor: Color = Color.White,
     animationDelay: Int = 0
 ) {
@@ -74,7 +88,7 @@ fun Dot(
 
     Box(
         modifier = Modifier
-            .size(12.dp)
+            .size(dotSize)
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
