@@ -9,15 +9,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
+import com.kwon.taboo.compose.designsystem.loading.DotLoading
 import com.kwon.taboo.compose.designsystem.scalePointerInput
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue200
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
@@ -43,20 +49,21 @@ fun TabooButton(
     text: @Composable () -> Unit,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: TabooButtonColors = TabooButtonDefaults.buttonColors(),
-    border: BorderStroke? = null
+    border: BorderStroke? = null,
+    isLoading: Boolean = false
 ) {
     val isPressed = interactionSource.collectIsPressedAsState()
+    var isLoading by remember { mutableStateOf(isLoading) }
 
     Surface(
         modifier = modifier
-            .heightIn(50.dp)
             .wrapContentHeight()
             .scalePointerInput(
                 onClick = onClick,
                 interactionSource = interactionSource
             )
         ,
-        shape = TabooShape.Medium,
+        shape = RoundedCornerShape(25),
         color = colors.containerColor(
             enabled = enabled,
             isPressed = isPressed.value
@@ -69,10 +76,14 @@ fun TabooButton(
     ) {
         Box(
             modifier = Modifier
-                .padding(15.dp),
+                .heightIn(60.dp),
             contentAlignment = Alignment.Center
         ) {
-            text()
+            if (isLoading) {
+                DotLoading()
+            } else {
+                text()
+            }
         }
     }
 }
@@ -261,7 +272,10 @@ fun TabooOutlineButtonPreview() {
 fun TabooButtonPreviews() {
     TabooTheme {
         TabooBackground {
-            Surface(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 TabooButton(
                     onClick = {
 
@@ -273,6 +287,39 @@ fun TabooButtonPreviews() {
         }
     }
 }
+
+@ThemePreviews
+@Composable
+fun TabooLoadingButtonPreviews() {
+    TabooTheme {
+        TabooBackground {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                TabooButton(
+                    onClick = {
+
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    text = { Text(text = "Button") },
+                    isLoading = true
+                )
+
+                TabooButton(
+                    onClick = {
+
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    text = { Text(text = "Button") },
+                    isLoading = true,
+                    enabled = false
+                )
+            }
+        }
+    }
+}
+
 
 @ThemePreviews
 @Composable
