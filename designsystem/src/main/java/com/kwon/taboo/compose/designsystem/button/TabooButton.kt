@@ -60,7 +60,8 @@ fun TabooButton(
             .wrapContentHeight()
             .scalePointerInput(
                 onClick = onClick,
-                interactionSource = interactionSource
+                interactionSource = interactionSource,
+                enabled = enabled
             )
         ,
         shape = RoundedCornerShape(25),

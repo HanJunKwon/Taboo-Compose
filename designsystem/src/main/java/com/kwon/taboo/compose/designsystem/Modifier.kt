@@ -37,7 +37,8 @@ fun Modifier.scaleClickable(
 @Composable
 fun Modifier.scalePointerInput(
     onClick: () -> Unit,
-    interactionSource: MutableInteractionSource? = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource? = remember { MutableInteractionSource() },
+    enabled: Boolean = true
 ) : Modifier {
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
@@ -48,6 +49,8 @@ fun Modifier.scalePointerInput(
         .pointerInput(Unit) {
             detectTapGestures(
                 onPress = {
+                    if (!enabled) return@detectTapGestures
+
                     isPressed = true
 
                     val pressInteraction = PressInteraction.Press(Offset.Zero)
