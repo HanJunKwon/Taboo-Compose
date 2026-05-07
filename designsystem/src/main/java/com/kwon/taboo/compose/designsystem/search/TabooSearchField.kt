@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -68,6 +69,7 @@ fun TabooSearchField(
             fontWeight = FontWeight.Normal,
             color = TabooSearchFieldDefaults.defaultTextColor(enabled),
         ),
+        lineLimits = TextFieldLineLimits.SingleLine,
         decorator = { innerTextFiled ->
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -168,7 +170,7 @@ private fun SearchFieldPreview() {
     TabooTheme {
         TabooBackground {
             Column(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(50.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 TabooSearchField(
