@@ -29,10 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
+import com.kwon.taboo.compose.designsystem.theme.TabooBlack600
+import com.kwon.taboo.compose.designsystem.theme.TabooBlack700
+import com.kwon.taboo.compose.designsystem.theme.TabooBlack800
+import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue100
+import com.kwon.taboo.compose.designsystem.theme.TabooBlue900
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
 import com.kwon.taboo.compose.designsystem.theme.TabooGray200
+import com.kwon.taboo.compose.designsystem.theme.TabooGray300
 import com.kwon.taboo.compose.designsystem.theme.TabooGray400
 import com.kwon.taboo.compose.designsystem.theme.TabooGray600
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
@@ -132,7 +138,7 @@ object TabooTextAreaDefault {
 
     @Composable
     private fun textColor(): Color {
-        return if (isSystemInDarkTheme()) Color.Black else Color.Black
+        return if (isSystemInDarkTheme()) TabooGray300 else Color.Black
     }
 
     @Composable
@@ -142,27 +148,27 @@ object TabooTextAreaDefault {
 
     @Composable
     private fun placeHolderColor() : Color {
-        return if (isSystemInDarkTheme()) TabooGray400 else TabooGray400
+        return if (isSystemInDarkTheme()) TabooGray600 else TabooGray400
     }
 
     @Composable
     private fun helpTextColor() : Color {
-        return if (isSystemInDarkTheme()) TabooGray400 else TabooGray400
+        return if (isSystemInDarkTheme()) TabooGray600 else TabooGray400
     }
 
     @Composable
     private fun backgroundColor() : Color {
-        return if (isSystemInDarkTheme()) TabooGray100 else TabooGray100
+        return if (isSystemInDarkTheme()) TabooBlack800 else TabooGray100
     }
 
     @Composable
     private fun disabledBackgroundColor() : Color {
-        return if (isSystemInDarkTheme()) TabooGray200 else TabooGray200
+        return if (isSystemInDarkTheme()) TabooBlack900 else TabooGray200
     }
 
     @Composable
     private fun focusedBackgroundColor() : Color {
-        return if (isSystemInDarkTheme()) TabooBlue100 else TabooBlue100
+        return if (isSystemInDarkTheme()) TabooBlack800 else TabooBlue100
     }
 }
 
