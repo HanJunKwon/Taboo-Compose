@@ -87,8 +87,8 @@ fun TabooTextArea(
                 enabled = enabled,
                 textStyle = TextStyle(
                     fontFamily = TabooFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
                     color = colors.textColor(enabled)
                 ),
                 decorator = { innerTextField ->
@@ -97,8 +97,8 @@ fun TabooTextArea(
                             text = placeHolder,
                             style = TextStyle(
                                 fontFamily = TabooFontFamily,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp,
                                 color = colors.placeHolderColor
                             )
                         )
