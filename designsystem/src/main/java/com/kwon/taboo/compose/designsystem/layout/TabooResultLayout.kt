@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kwon.taboo.compose.designsystem.R
@@ -33,20 +34,20 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
 fun TabooResultLayout(
+    modifier: Modifier = Modifier,
     icon: Painter,
     title: String,
     description: String,
     button: (@Composable () -> Unit)? = null
 ) {
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             painter = icon,
-            contentDescription = "",
-            modifier = Modifier
-                .size(48.dp)
+            contentDescription = ""
         )
 
         Spacer(modifier = Modifier.height(18.dp))
@@ -70,7 +71,8 @@ fun TabooResultLayout(
                 fontFamily = TabooFontFamily,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal
-            )
+            ),
+            textAlign = TextAlign.Center
         )
 
         if (button != null) {
@@ -118,11 +120,12 @@ private fun TabooResultLayoutPreview() {
                 )
 
                 TabooResultLayout(
+                    modifier = Modifier.fillMaxWidth(),
                     icon = painterResource(
                         id = R.drawable.ic_file_empty
                     ),
                     title = "기안함",
-                    description = "기안한 전자 결재가 없어요.",
+                    description = "기안한 전자 결재가 없어요.\n새로고침하여 다시 한 번 조회해주세요.",
                     button = {
                         TabooButton(
                             onClick = {
