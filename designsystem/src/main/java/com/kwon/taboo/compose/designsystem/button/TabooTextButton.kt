@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,7 +60,7 @@ fun TabooTextButton(
     val isPressed = interactionSource.collectIsPressedAsState().value
 
     Surface(
-        modifier = modifier,
+        modifier = modifier.semantics { role = Role.Button },
         color = Color.Transparent
     ) {
         Row(
@@ -71,7 +76,8 @@ fun TabooTextButton(
                 )
                 .padding(3.dp)
                 .padding(horizontal = 5.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = label,
@@ -136,8 +142,6 @@ object TabooTextButtonDefault {
             fontSize = 14.sp
         )
     }
-
-
 }
 
 @ThemePreviews
@@ -162,6 +166,33 @@ fun TabooTextButtonPreviews() {
                 TabooTextButton(
                     onClick = {},
                     label = "텍스트 버튼",
+                    modifier = Modifier.fillMaxWidth(),
+                    icon = painterResource(R.drawable.ic_chevron_right)
+                )
+            }
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun TabooTextButtonPreviews2() {
+    TabooTheme() {
+        TabooBackground {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                TabooTextButton(
+                    onClick = {},
+                    label = "텍스트 버튼",
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
+                    icon = painterResource(R.drawable.ic_chevron_right)
+                )
+
+                TabooTextButton(
+                    onClick = {},
+                    label = "텍스트 버튼",
+                    modifier = Modifier.fillMaxWidth().height(50.dp),
                     icon = painterResource(R.drawable.ic_chevron_right)
                 )
             }

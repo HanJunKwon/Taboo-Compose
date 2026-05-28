@@ -47,6 +47,13 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     TabooTheme {
         TabooBackground {
+            Button(
+                onClick = {
+
+                }
+            ) {
+
+            }
             Column(
                 modifier = Modifier.padding(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
