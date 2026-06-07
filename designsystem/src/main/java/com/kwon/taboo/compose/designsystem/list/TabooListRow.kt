@@ -46,13 +46,14 @@ object TabooListRow {
     @Composable
     operator fun invoke(
         modifier: Modifier = Modifier,
+        onClick: () -> Unit,
         verticalPadding: VerticalPadding = VerticalPadding.MEDIUM,
         horizontalPadding: HorizontalPadding = HorizontalPadding.SMALL,
         left: Asset? = null,
         leftIconShape: IconShape = IconShape.ORIGINAL,
         header: (@Composable () -> Unit),
         description: (@Composable () -> Unit)? = null,
-        right: (@Composable () -> Unit)? = null
+        right: (@Composable () -> Unit)? = null,
     ) {
         val interactionSource = remember { MutableInteractionSource() }
         val isPressed = interactionSource.collectIsPressedAsState().value
@@ -61,9 +62,7 @@ object TabooListRow {
             modifier = modifier
                 .fillMaxWidth()
                 .scalePointerInput(
-                    onClick = {
-
-                    },
+                    onClick = onClick,
                     interactionSource = interactionSource
                 )
                 .background(
@@ -219,6 +218,7 @@ fun TabooListRowPreviews() {
                     .fillMaxSize()
             ) {
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -231,6 +231,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -244,6 +245,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -257,6 +259,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -276,6 +279,9 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {
+
+                    },
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -296,6 +302,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -312,6 +319,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -338,6 +346,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -365,6 +374,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Icon(
                         iconId = R.drawable.icon_receipt_out_money_debit_withdrawal_withdraw
                     ),
@@ -398,6 +408,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Text(
                         text = "오늘"
                     ),
@@ -410,6 +421,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     left = TabooListRow.Asset.Text(
                         text = "오늘"
                     ),
@@ -423,6 +435,7 @@ fun TabooListRowPreviews() {
                 )
 
                 TabooListRow(
+                    onClick = {},
                     verticalPadding = TabooListRow.VerticalPadding.LARGE,
                     horizontalPadding = TabooListRow.HorizontalPadding.MEDIUM,
                     left = TabooListRow.Asset.Text(
