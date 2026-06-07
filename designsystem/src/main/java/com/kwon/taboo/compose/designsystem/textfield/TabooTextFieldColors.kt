@@ -14,7 +14,9 @@ data class TabooTextFieldColors(
     val disabledContentColor: Color,
     val lineColor: Color,
     val focusedLineColor: Color,
-    val disabledLineColor: Color
+    val disabledLineColor: Color,
+    val showPasswordColor: Color,
+    val hidePasswordColor: Color
 ) {
     fun titleColor(enabled: Boolean, focused: Boolean): Color {
         return if (enabled) {
@@ -49,6 +51,14 @@ data class TabooTextFieldColors(
             }
         } else {
             disabledLineColor
+        }
+    }
+
+    fun passwordColor(showPassword: Boolean): Color {
+        return if (showPassword) {
+            showPasswordColor
+        } else {
+            hidePasswordColor
         }
     }
 }

@@ -1,31 +1,44 @@
 package com.kwon.taboo.compose.designsystem.textfield
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack600
@@ -33,8 +46,10 @@ import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
+import com.kwon.taboo.compose.designsystem.theme.TabooGray300
 import com.kwon.taboo.compose.designsystem.theme.TabooGray400
 import com.kwon.taboo.compose.designsystem.theme.TabooGray600
+import com.kwon.taboo.compose.designsystem.theme.TabooGray700
 import com.kwon.taboo.compose.designsystem.theme.TabooGray800
 import com.kwon.taboo.compose.designsystem.theme.TabooGray900
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
@@ -47,7 +62,10 @@ fun TabooTextField(
     title: String,
     placeHolder: String? = null,
     colors: TabooTextFieldColors = TabooTextFieldDefaults.colors(),
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isPassword: Boolean = false,
+    showPassword: Boolean = false,
 ) {
     when (variant) {
         TabooTextFieldVariant.BOX -> TabooBoxTextField(
@@ -55,14 +73,20 @@ fun TabooTextField(
             title,
             placeHolder,
             colors,
-            enabled
+            enabled,
+            keyboardOptions,
+            isPassword,
+            showPassword
         )
         TabooTextFieldVariant.LINE -> TabooLineTextField(
             state,
             title,
             placeHolder,
             colors,
-            enabled
+            enabled,
+            keyboardOptions,
+            isPassword,
+            showPassword
         )
     }
 }
@@ -73,10 +97,14 @@ fun TabooBoxTextField(
     title: String,
     placeHolder: String?,
     colors: TabooTextFieldColors,
-    enabled: Boolean
+    enabled: Boolean,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isPassword: Boolean,
+    showPassword: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused = interactionSource.collectIsFocusedAsState().value
+    var showPassword by remember { mutableStateOf(showPassword) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -97,30 +125,90 @@ fun TabooBoxTextField(
                 )
                 .padding(15.dp)
         ) {
-            BasicTextField(
-                state = state,
-                modifier = Modifier.fillMaxWidth(),
-                decorator = { innerTextField ->
-                    if (state.text.isEmpty()) {
-
-                        if (placeHolder != null) {
-                            Text(
-                                text = placeHolder,
-                                color = colors.placeHolderColor,
-                                style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.BOX)
-                            )
-                        }
-
+            if (isPassword) {
+                BasicSecureTextField(
+                    state = state,
+                    textObfuscationMode = if (showPassword) {
+                        TextObfuscationMode.Visible
                     } else {
-                        innerTextField()
-                    }
-                },
-                textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.BOX).copy(
-                    color = colors.textColor(enabled, isFocused)
-                ),
-                enabled = enabled,
-                interactionSource = interactionSource
-            )
+                        TextObfuscationMode.Hidden
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = keyboardOptions,
+                    decorator = { innerTextField ->
+                        if (state.text.isEmpty()) {
+
+                            if (placeHolder != null) {
+                                Text(
+                                    text = placeHolder,
+                                    color = colors.placeHolderColor,
+                                    style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.BOX)
+                                )
+                            }
+
+                        } else {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Box(modifier = Modifier.weight(1f)) {
+                                    innerTextField()
+                                }
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_visibility_24dp),
+                                    modifier = Modifier
+                                        .padding(start = 10.dp)
+                                        .clickable(
+                                            enabled = enabled,
+                                            onClick = {
+                                                showPassword = !showPassword
+                                            }
+                                        ),
+                                    colorFilter = ColorFilter.tint(
+                                        color = if (showPassword) {
+                                            colors.showPasswordColor
+                                        } else {
+                                            colors.hidePasswordColor
+                                        }
+                                    ),
+                                    contentDescription = ""
+                                )
+                            }
+                        }
+                    },
+                    textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.BOX).copy(
+                        color = colors.textColor(enabled, isFocused)
+                    ),
+                    enabled = enabled,
+                    interactionSource = interactionSource
+                )
+            } else {
+                BasicTextField(
+                    state = state,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = keyboardOptions,
+                    decorator = { innerTextField ->
+                        if (state.text.isEmpty()) {
+
+                            if (placeHolder != null) {
+                                Text(
+                                    text = placeHolder,
+                                    color = colors.placeHolderColor,
+                                    style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.BOX)
+                                )
+                            }
+
+                        } else {
+                            innerTextField()
+                        }
+                    },
+                    textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.BOX).copy(
+                        color = colors.textColor(enabled, isFocused)
+                    ),
+                    enabled = enabled,
+                    interactionSource = interactionSource
+                )
+            }
         }
     }
 }
@@ -131,10 +219,14 @@ fun TabooLineTextField(
     title: String,
     placeHolder: String?,
     colors: TabooTextFieldColors = TabooTextFieldDefaults.colors(),
-    enabled: Boolean
+    enabled: Boolean,
+    keyboardOptions: KeyboardOptions,
+    isPassword: Boolean,
+    showPassword: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused = interactionSource.collectIsFocusedAsState().value
+    var showPassword by remember { mutableStateOf(showPassword) }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -157,32 +249,95 @@ fun TabooLineTextField(
                         colorFilter = ColorFilter.tint(color = colors.lineColor(enabled, isFocused))
                     )
                 }
-                .padding(top = 7.dp, bottom = 9.dp)
+                .padding(
+                    top = 7.dp,
+                    bottom = 9.dp
+                )
         ) {
-            BasicTextField(
-                state = state,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
-                decorator = { innerTextField ->
-                    if (state.text.isEmpty()) {
-
-                        if (placeHolder != null) {
-                            Text(
-                                text = placeHolder,
-                                color = colors.placeHolderColor,
-                                style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.LINE)
-                            )
-                        }
-
+            if (isPassword) {
+                BasicSecureTextField(
+                    state = state,
+                    textObfuscationMode = if (showPassword) {
+                        TextObfuscationMode.Visible
                     } else {
-                        innerTextField()
-                    }
-                },
-                textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.LINE).copy(
-                    color = colors.textColor(enabled, isFocused)
-                ),
-                enabled = enabled,
-                interactionSource = interactionSource
-            )
+                        TextObfuscationMode.Hidden
+                    },
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+                    decorator = { innerTextField ->
+                        if (state.text.isEmpty()) {
+
+                            if (placeHolder != null) {
+                                Text(
+                                    text = placeHolder,
+                                    color = colors.placeHolderColor,
+                                    style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.LINE)
+                                )
+                            }
+
+                        } else {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Box(modifier = Modifier.weight(1f)) {
+                                    innerTextField()
+                                }
+
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_visibility_24dp),
+                                    modifier = Modifier
+                                        .padding(start = 10.dp)
+                                        .clickable(
+                                            enabled = enabled,
+                                            onClick = {
+                                                showPassword = !showPassword
+                                            }
+                                        ),
+                                    colorFilter = ColorFilter.tint(
+                                        color = if (showPassword) {
+                                            colors.showPasswordColor
+                                        } else {
+                                            colors.hidePasswordColor
+                                        }
+                                    ),
+                                    contentDescription = ""
+                                )
+                            }
+                        }
+                    },
+                    textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.LINE).copy(
+                        color = colors.textColor(enabled, isFocused)
+                    ),
+                    enabled = enabled,
+                    interactionSource = interactionSource
+                )
+            } else {
+                BasicTextField(
+                    state = state,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
+                    keyboardOptions = keyboardOptions,
+                    decorator = { innerTextField ->
+                        if (state.text.isEmpty()) {
+
+                            if (placeHolder != null) {
+                                Text(
+                                    text = placeHolder,
+                                    color = colors.placeHolderColor,
+                                    style = TabooTextFieldDefaults.placeHolderTextStyle(variant = TabooTextFieldVariant.LINE)
+                                )
+                            }
+
+                        } else {
+                            innerTextField()
+                        }
+                    },
+                    textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.LINE).copy(
+                        color = colors.textColor(enabled, isFocused)
+                    ),
+                    enabled = enabled,
+                    interactionSource = interactionSource
+                )
+            }
         }
     }
 }
@@ -256,7 +411,9 @@ object TabooTextFieldDefaults {
         disabledContentColor = defaultDisabledContentColor(),
         lineColor = defaultLineColor(),
         focusedLineColor = defaultFocusedLineColor(),
-        disabledLineColor = defaultDisabledLineColor()
+        disabledLineColor = defaultDisabledLineColor(),
+        showPasswordColor = defaultShowPasswordColor(),
+        hidePasswordColor = defaultHidePasswordColor()
     )
 
     @Composable
@@ -294,6 +451,12 @@ object TabooTextFieldDefaults {
 
     @Composable
     private fun defaultDisabledLineColor(): Color = TabooGray100
+
+    @Composable
+    private fun defaultShowPasswordColor(): Color = if (isSystemInDarkTheme()) TabooGray600 else TabooGray700
+
+    @Composable
+    private fun defaultHidePasswordColor(): Color = if (isSystemInDarkTheme()) TabooGray900 else TabooGray300
 }
 
 @ThemePreviews
@@ -316,6 +479,14 @@ fun TabooTextFieldVariantBoxPreviews() {
 
                 TabooTextField(
                     state = textState,
+                    title = "비밀번호",
+                    placeHolder = "비밀번호를 입력해주세요.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    isPassword = true
+                )
+
+                TabooTextField(
+                    state = textState,
                     title = "타이틀",
                     placeHolder = "내용을 입력해주세요.",
                     enabled = false
@@ -326,6 +497,15 @@ fun TabooTextFieldVariantBoxPreviews() {
                     variant = TabooTextFieldVariant.LINE,
                     title = "타이틀",
                     placeHolder = "내용을 입력해주세요."
+                )
+
+                TabooTextField(
+                    state = textState,
+                    variant = TabooTextFieldVariant.LINE,
+                    title = "비밀번호",
+                    placeHolder = "비밀번호를 입력해주세요.",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    isPassword = true,
                 )
 
                 TabooTextField(
