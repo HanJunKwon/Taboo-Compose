@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.TextObfuscationMode
 import androidx.compose.foundation.text.input.rememberTextFieldState
@@ -205,6 +206,7 @@ fun TabooBoxTextField(
                     textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.BOX).copy(
                         color = colors.textColor(enabled, isFocused)
                     ),
+                    lineLimits = TextFieldLineLimits.SingleLine,
                     enabled = enabled,
                     interactionSource = interactionSource
                 )
@@ -334,6 +336,7 @@ fun TabooLineTextField(
                     textStyle = TabooTextFieldDefaults.textFieldTextStyle(variant = TabooTextFieldVariant.LINE).copy(
                         color = colors.textColor(enabled, isFocused)
                     ),
+                    lineLimits = TextFieldLineLimits.SingleLine,
                     enabled = enabled,
                     interactionSource = interactionSource
                 )
