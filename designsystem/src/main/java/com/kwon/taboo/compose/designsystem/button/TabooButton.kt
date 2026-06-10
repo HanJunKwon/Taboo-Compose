@@ -53,7 +53,6 @@ fun TabooButton(
     isLoading: Boolean = false
 ) {
     val isPressed = interactionSource.collectIsPressedAsState()
-    var isLoading by remember { mutableStateOf(isLoading) }
 
     Surface(
         modifier = modifier
