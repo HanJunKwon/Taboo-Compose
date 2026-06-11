@@ -48,11 +48,6 @@ fun TabooBottomDialog(
             usePlatformDefaultWidth = false
         )
     ) {
-        val view = LocalView.current
-        LaunchedEffect(Unit) {
-            (view.parent as DialogWindowProvider).window.setDimAmount(0.1f)
-        }
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -70,7 +65,7 @@ fun TabooBottomDialog(
                     .wrapContentHeight()
                     .padding(horizontal = 10.dp)
                     .padding(bottom = 5.dp),
-                shape = RoundedCornerShape(20),
+                shape = RoundedCornerShape(25.dp),
                 colors = TabooBottomDialogDefaults.cardColors()
             ) {
                 content()
