@@ -34,10 +34,11 @@ fun TabooDoubleBottomCTA(
     confirmText: String,
     onClickConfirm: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    isFill: Boolean = true,
+    content: @Composable () -> Unit,
 ) {
     Column(modifier = modifier) {
-        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        Box(modifier = Modifier.fillMaxWidth().weight(1f, isFill)) {
             content()
         }
 
@@ -92,8 +93,7 @@ private fun TabooSingleBottomCTAPreviews() {
                 confirmText = "확인",
                 onClickConfirm = {
 
-                },
-                modifier = Modifier.fillMaxWidth().fillMaxHeight()
+                }
             ) {
                 CompositionLocalProvider(LocalOverscrollFactory provides null) {
                     LazyColumn(
