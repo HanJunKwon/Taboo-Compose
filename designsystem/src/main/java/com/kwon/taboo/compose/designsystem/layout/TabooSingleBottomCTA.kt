@@ -28,10 +28,11 @@ fun TabooSingleBottomCTA(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isFill: Boolean = true,
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier) {
-        Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+        Box(modifier = Modifier.fillMaxWidth().weight(1f, isFill)) {
             content()
         }
 
