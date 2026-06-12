@@ -31,10 +31,12 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 @Composable
 fun TabooConfirm(
     onDismissRequest: () -> Unit,
+    onClickCancel: () -> Unit,
+    onClickConfirm: () -> Unit,
     title: String,
     description: String? = null,
     confirmButton: String,
-    cancelButton: String
+    cancelButton: String,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest
@@ -77,7 +79,7 @@ fun TabooConfirm(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     TabooButton(
-                        onClick = onDismissRequest,
+                        onClick = onClickCancel,
                         modifier = Modifier.fillMaxWidth(0.5f),
                         text = {
                             Text(
@@ -93,7 +95,7 @@ fun TabooConfirm(
                     )
 
                     TabooButton(
-                        onClick = onDismissRequest,
+                        onClick = onClickConfirm,
                         modifier = Modifier.fillMaxWidth(1f),
                         text = {
                             Text(
@@ -135,6 +137,8 @@ private fun TabooConfirmPreviews() {
             ) {
                 TabooConfirm(
                     onDismissRequest = {},
+                    onClickCancel = {},
+                    onClickConfirm = {},
                     title = "Confirm 타이틀",
                     description = "내용",
                     confirmButton = "확인",
