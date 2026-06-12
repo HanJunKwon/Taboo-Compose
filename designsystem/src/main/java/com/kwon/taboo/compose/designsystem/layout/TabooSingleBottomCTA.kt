@@ -28,6 +28,7 @@ fun TabooSingleBottomCTA(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
     isFill: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -50,7 +51,9 @@ fun TabooSingleBottomCTA(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp)
+                .padding(10.dp),
+            enabled = !isLoading,
+            isLoading = isLoading
         )
     }
 }

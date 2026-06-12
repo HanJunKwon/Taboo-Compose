@@ -34,6 +34,7 @@ fun TabooDoubleBottomCTA(
     confirmText: String,
     onClickConfirm: () -> Unit,
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
     isFill: Boolean = true,
     content: @Composable () -> Unit,
 ) {
@@ -59,7 +60,9 @@ fun TabooDoubleBottomCTA(
                         )
                     )
                 },
-                colors = TabooConfirmDefault.cancelButtonColors()
+                colors = TabooConfirmDefault.cancelButtonColors(),
+                enabled = !isLoading,
+                isLoading = isLoading
             )
 
             TabooButton(
@@ -74,7 +77,9 @@ fun TabooDoubleBottomCTA(
                             fontWeight = FontWeight.SemiBold
                         )
                     )
-                }
+                },
+                enabled = !isLoading,
+                isLoading = isLoading
             )
         }
     }
