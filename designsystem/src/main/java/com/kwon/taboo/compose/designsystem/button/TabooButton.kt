@@ -19,16 +19,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
-import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.loading.DotLoading
 import com.kwon.taboo.compose.designsystem.scalePointerInput
@@ -45,6 +42,7 @@ import com.kwon.taboo.compose.designsystem.theme.White
 fun TabooButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    size: TabooButtonSize = TabooButtonSize.XLARGE,
     enabled: Boolean = true,
     text: @Composable () -> Unit,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -76,7 +74,8 @@ fun TabooButton(
     ) {
         Box(
             modifier = Modifier
-                .heightIn(60.dp),
+                .heightIn(TabooButtonDefaults.height(buttonSize = size))
+                .padding(horizontal = TabooButtonDefaults.padding(buttonSize = size)),
             contentAlignment = Alignment.Center
         ) {
             if (isLoading) {
@@ -92,6 +91,7 @@ fun TabooButton(
 fun TabooOutlineButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    size: TabooButtonSize = TabooButtonSize.XLARGE,
     enabled: Boolean = true,
     text: @Composable () -> Unit,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -100,6 +100,7 @@ fun TabooOutlineButton(
 ) = TabooButton(
     onClick = onClick,
     modifier = modifier,
+    size = size,
     enabled = enabled,
     text = text,
     interactionSource = interactionSource,
@@ -108,6 +109,46 @@ fun TabooOutlineButton(
 )
 
 object TabooButtonDefaults {
+    fun height(buttonSize: TabooButtonSize): Dp {
+        return when (buttonSize) {
+            TabooButtonSize.SMALL -> {
+                35.dp
+            }
+
+            TabooButtonSize.MEDIUM -> {
+                40.dp
+            }
+
+            TabooButtonSize.LARGE -> {
+                50.dp
+            }
+
+            TabooButtonSize.XLARGE -> {
+                60.dp
+            }
+        }
+    }
+
+    fun padding(buttonSize: TabooButtonSize): Dp {
+        return when (buttonSize) {
+            TabooButtonSize.SMALL -> {
+                12.dp
+            }
+
+            TabooButtonSize.MEDIUM -> {
+                15.dp
+            }
+
+            TabooButtonSize.LARGE -> {
+                18.dp
+            }
+
+            TabooButtonSize.XLARGE -> {
+                21.dp
+            }
+        }
+    }
+
     @Composable
     fun buttonColors() = TabooButtonColors(
         containerColor = defaultContainerColor(),
@@ -207,6 +248,13 @@ object TabooButtonDefaults {
             if (enabled) TabooBlue600 else TabooBlue200
         }
     )
+}
+
+enum class TabooButtonSize {
+    SMALL,
+    MEDIUM,
+    LARGE,
+    XLARGE
 }
 
 @ThemePreviews
@@ -345,6 +393,51 @@ fun TabooButtonLazyPreviews() {
                     },
                     modifier = Modifier.fillMaxWidth(),
                     text = { Text(text = "Button") }
+                )
+            }
+        }
+    }
+}
+
+@ThemePreviews
+@Composable
+fun TabooButtonSizePreviews() {
+    TabooTheme {
+        TabooBackground {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                TabooButton(
+                    onClick = {},
+                    size = TabooButtonSize.SMALL,
+                    text = {
+                        Text(text = "Small")
+                    }
+                )
+
+                TabooButton(
+                    onClick = {},
+                    size = TabooButtonSize.MEDIUM,
+                    text = {
+                        Text(text = "MEDIUM")
+                    }
+                )
+
+                TabooButton(
+                    onClick = {},
+                    size = TabooButtonSize.LARGE,
+                    text = {
+                        Text(text = "LARGE")
+                    }
+                )
+
+                TabooButton(
+                    onClick = {},
+                    size = TabooButtonSize.XLARGE,
+                    text = {
+                        Text(text = "XLARGE")
+                    }
                 )
             }
         }
