@@ -1,5 +1,6 @@
 package com.kwon.taboo.compose.designsystem.segment
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -50,6 +51,7 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 fun TabooSegmentTab(
     modifier: Modifier = Modifier,
     labels: List<String>,
+    onClickItem: (Int) -> Unit,
     textStyle: TextStyle = TabooSegmentControlDefaults.defaultTextStyle(),
     segmentTabColors: TabooSegmentTabColors = TabooSegmentControlDefaults.defaultSegmentColors()
 ) {
@@ -109,7 +111,10 @@ fun TabooSegmentTab(
                                 horizontal = 10.dp
                             )
                             .scaleClickable(
-                                onClick = { selectedIndex = index }
+                                onClick = {
+                                    selectedIndex = index
+                                    onClickItem(selectedIndex)
+                                }
                             )
                         ,
                         style = textStyle,
@@ -153,7 +158,10 @@ private fun TabooSegmentTabPreview() {
             ) {
                 TabooSegmentTab(
                     modifier = Modifier.fillMaxWidth(),
-                    labels = listOf("Item 1", "아이템 2")
+                    labels = listOf("Item 1", "아이템 2"),
+                    onClickItem = { index ->
+                        Log.d(">>>", "index = $index")
+                    }
                 )
             }
         }
