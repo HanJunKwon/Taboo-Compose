@@ -5,14 +5,21 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.R
@@ -20,6 +27,7 @@ import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.TabooShape
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.scaleClickable
+import com.kwon.taboo.compose.designsystem.scalePointerInput
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack800
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
 import com.kwon.taboo.compose.designsystem.theme.TabooGray500
@@ -32,32 +40,58 @@ import com.kwon.taboo.compose.designsystem.theme.TabooYellow100
 fun TabooIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    size: TabooIconButtonSize = TabooIconButtonSize.MEDIUM,
     enabled: Boolean = true,
     icon: Painter,
     iconColorFilter: ColorFilter = TabooIconButtonDefaults.defaultIconColorFilter(),
     variant: TabooIconButtonVariant = TabooIconButtonVariant.CLEAR,
     backgroundColor: Color = TabooIconButtonDefaults.defaultBackgroundColor(variant)
 ) {
-    Image(
-        painter = icon,
-        contentDescription = "",
+    val iconSize = when (size) {
+        TabooIconButtonSize.SMALL -> 16.dp
+        TabooIconButtonSize.MEDIUM -> 20.dp
+        TabooIconButtonSize.LARGE -> 24.dp
+    }
+
+    val boxSize = when (size) {
+        TabooIconButtonSize.SMALL -> 32.dp
+        TabooIconButtonSize.MEDIUM -> 38.dp
+        TabooIconButtonSize.LARGE -> 48.dp
+    }
+
+    val shape = when (size) {
+        TabooIconButtonSize.SMALL -> TabooShape.Medium
+        TabooIconButtonSize.MEDIUM -> TabooShape.Large
+        TabooIconButtonSize.LARGE -> TabooShape.ExtraLarge
+    }
+
+    Box(
         modifier = modifier
+            .scalePointerInput(
+                onClick = onClick,
+                enabled = enabled,
+                pressedScale = 0.9f
+            )
+            .size(boxSize)
             .background(
                 color = backgroundColor,
-                shape = TabooShape.Medium
+                shape = shape
             )
             .border(
                 width = 1.dp,
                 color = TabooIconButtonDefaults.defaultBorderColor(variant),
                 shape = TabooShape.Medium
             )
-            .padding(6.dp)
-            .scaleClickable(
-                onClick = onClick,
-                enabled = enabled
-            ),
-        colorFilter = iconColorFilter
-    )
+        ,
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = icon,
+            contentDescription = "",
+            modifier = Modifier.size(iconSize),
+            colorFilter = iconColorFilter,
+        )
+    }
 }
 
 object TabooIconButtonDefaults {
@@ -104,6 +138,12 @@ object TabooIconButtonDefaults {
     }
 }
 
+enum class TabooIconButtonSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+
 enum class TabooIconButtonVariant {
     CLEAR,
     FILL,
@@ -119,13 +159,45 @@ private fun TabooIconButtonPreview() {
             Column {
                 Row(
                     modifier = Modifier.padding(10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     TabooIconButton(
                         onClick = {
 
                         },
+                        size = TabooIconButtonSize.SMALL,
                         icon = painterResource(R.drawable.ic_search)
+                    )
+
+                    TabooIconButton(
+                        onClick = {
+
+                        },
+                        icon = painterResource(R.drawable.ic_search)
+                    )
+
+                    TabooIconButton(
+                        onClick = {
+
+                        },
+                        size = TabooIconButtonSize.LARGE,
+                        icon = painterResource(R.drawable.ic_search)
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TabooIconButton(
+                        onClick = {
+
+                        },
+                        size = TabooIconButtonSize.SMALL,
+                        icon = painterResource(R.drawable.ic_search),
+                        variant = TabooIconButtonVariant.FILL
                     )
 
                     TabooIconButton(
@@ -140,6 +212,39 @@ private fun TabooIconButtonPreview() {
                         onClick = {
 
                         },
+                        size = TabooIconButtonSize.LARGE,
+                        icon = painterResource(R.drawable.ic_search),
+                        variant = TabooIconButtonVariant.FILL
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.padding(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TabooIconButton(
+                        onClick = {
+
+                        },
+                        size = TabooIconButtonSize.SMALL,
+                        icon = painterResource(R.drawable.ic_search),
+                        variant = TabooIconButtonVariant.OUTLINE
+                    )
+
+                    TabooIconButton(
+                        onClick = {
+
+                        },
+                        icon = painterResource(R.drawable.ic_search),
+                        variant = TabooIconButtonVariant.OUTLINE
+                    )
+
+                    TabooIconButton(
+                        onClick = {
+
+                        },
+                        size = TabooIconButtonSize.LARGE,
                         icon = painterResource(R.drawable.ic_search),
                         variant = TabooIconButtonVariant.OUTLINE
                     )
