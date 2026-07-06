@@ -38,11 +38,12 @@ fun Modifier.scaleClickable(
 fun Modifier.scalePointerInput(
     onClick: () -> Unit,
     interactionSource: MutableInteractionSource? = remember { MutableInteractionSource() },
+    pressedScale: Float = 0.95f,
     enabled: Boolean = true
 ) : Modifier {
     var isPressed by remember { mutableStateOf(false) }
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f
+        targetValue = if (isPressed) pressedScale else 1f
     )
 
     return scale(scale)
