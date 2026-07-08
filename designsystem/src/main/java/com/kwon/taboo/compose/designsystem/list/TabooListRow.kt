@@ -153,6 +153,7 @@ object TabooListRow {
 
     private fun getHorizontalPaddingDp(horizontalPadding: HorizontalPadding) : Dp {
         return when (horizontalPadding) {
+            HorizontalPadding.XSMALL -> 4.dp
             HorizontalPadding.SMALL -> 10.dp
             HorizontalPadding.MEDIUM -> 15.dp
         }
@@ -202,6 +203,7 @@ object TabooListRow {
     }
 
     enum class HorizontalPadding {
+        XSMALL,
         SMALL,
         MEDIUM
     }
