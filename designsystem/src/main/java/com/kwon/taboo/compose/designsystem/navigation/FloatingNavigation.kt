@@ -38,7 +38,7 @@ fun FloatingNavigation(
     onBack: () -> Unit,
     icon: Painter? = null,
     iconBackgroundColor: Color = NavigationRowDefault.iconBackgroundColor(),
-    iconColorFilter: ColorFilter = NavigationRowDefault.iconColorFilter(),
+    iconColor: Color = NavigationRowDefault.iconColor(),
     content: @Composable RowScope.() -> Unit
 ) {
     Surface(
@@ -59,7 +59,7 @@ fun FloatingNavigation(
             backIcon = icon,
             onBack = onBack,
             iconBackgroundColor = iconBackgroundColor,
-            iconColorFilter = iconColorFilter
+            iconColor = iconColor
         ) {
             content()
         }

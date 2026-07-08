@@ -83,7 +83,7 @@ fun BottomNavigation(
                         onBack?.invoke()
                     },
                     iconBackgroundColor = NavigationRowDefault.iconBackgroundColor(),
-                    iconColorFilter = NavigationRowDefault.iconColorFilter(),
+                    iconColor = NavigationRowDefault.iconColor(),
                 ) {
                     if (subNavigation != null) {
                         subNavigation()

@@ -23,6 +23,8 @@ import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.button.TabooIconButton
+import com.kwon.taboo.compose.designsystem.button.TabooIconButtonDefaults
+import com.kwon.taboo.compose.designsystem.button.TabooIconButtonVariant
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooOpacityWhiteW46
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
@@ -53,9 +55,11 @@ fun TabooNavigationBar(
                         onBackButton?.invoke()
                     },
                     icon = painterResource(R.drawable.icon_arrow_back_ios_mono),
-                    iconColorFilter = ColorFilter.tint(
-                        color = NavigationBarDefaults.backButtonColor()
-                    )
+                    colors = TabooIconButtonDefaults.colors(TabooIconButtonVariant.CLEAR)
+                        .copy(
+                            pressedBackgroundColor = Color.Transparent,
+                            iconColor = NavigationBarDefaults.backButtonColor(),
+                        )
                 )
             }
 

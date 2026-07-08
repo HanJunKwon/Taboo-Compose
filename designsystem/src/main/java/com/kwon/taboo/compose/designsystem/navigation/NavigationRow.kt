@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.button.TabooIconButton
+import com.kwon.taboo.compose.designsystem.button.TabooIconButtonDefaults
+import com.kwon.taboo.compose.designsystem.button.TabooIconButtonVariant
 import com.kwon.taboo.compose.designsystem.theme.TabooGray100
 import com.kwon.taboo.compose.designsystem.theme.TabooGray400
 import com.kwon.taboo.compose.designsystem.theme.TabooGray800
@@ -25,7 +27,7 @@ fun NavigationRow(
     backIcon: Painter? = null,
     onBack: (() -> Unit)? = null,
     iconBackgroundColor: Color,
-    iconColorFilter: ColorFilter,
+    iconColor: Color = NavigationRowDefault.iconColor(),
     content: @Composable RowScope.() -> Unit
 ) {
     Row(
@@ -46,7 +48,8 @@ fun NavigationRow(
                         shape = CircleShape
                     ),
                 icon = backIcon,
-                iconColorFilter = iconColorFilter
+                colors = TabooIconButtonDefaults.colors(variant = TabooIconButtonVariant.CLEAR)
+                    .copy(iconColor = iconColor)
             )
         }
 
@@ -66,7 +69,7 @@ object NavigationRowDefault {
     }
 
     @Composable
-    fun iconColorFilter(): ColorFilter {
-        return ColorFilter.tint(color = TabooGray400)
+    fun iconColor(): Color {
+        return TabooGray400
     }
 }
