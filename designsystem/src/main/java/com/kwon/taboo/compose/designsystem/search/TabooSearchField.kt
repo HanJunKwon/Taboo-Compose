@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -37,7 +39,6 @@ import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooGray200
 import com.kwon.taboo.compose.designsystem.theme.TabooGray300
-import com.kwon.taboo.compose.designsystem.theme.TabooGray400
 import com.kwon.taboo.compose.designsystem.theme.TabooGray500
 import com.kwon.taboo.compose.designsystem.theme.TabooGray600
 import com.kwon.taboo.compose.designsystem.theme.TabooGray900
@@ -47,7 +48,8 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 fun TabooSearchField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    placeholder: String = ""
 ) {
     BasicTextField(
         state = state,
@@ -91,7 +93,7 @@ fun TabooSearchField(
                 ) {
                     if (state.text.isEmpty()) {
                         Text(
-                            text = "검색어를 입력해주세요.",
+                            text = placeholder,
                             color = TabooSearchFieldDefaults.defaultPlaceholderColor(enabled),
                             style = TextStyle(
                                 fontSize = 14.sp,
