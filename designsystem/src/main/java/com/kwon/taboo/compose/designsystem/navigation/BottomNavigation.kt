@@ -1,15 +1,14 @@
 package com.kwon.taboo.compose.designsystem.navigation
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
@@ -35,8 +34,13 @@ import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
+import com.kwon.taboo.compose.designsystem.theme.TabooOpacityBlackB11
+import com.kwon.taboo.compose.designsystem.theme.TabooOpacityGrayG10
+import com.kwon.taboo.compose.designsystem.theme.TabooOpacityGrayG5
+import com.kwon.taboo.compose.designsystem.theme.TabooOpacityWhiteW5
 import com.kwon.taboo.compose.designsystem.theme.TabooRed600
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
+import com.kwon.taboo.compose.designsystem.theme.White
 
 @Composable
 fun BottomNavigation(
@@ -50,8 +54,23 @@ fun BottomNavigation(
         if (isSubNavigation) 10.dp else 0.dp
     )
 
-    val animatedRounded by animateFloatAsState(
-        targetValue = if (isSubNavigation) 100f else 0f
+    val animatedTopRounded by animateDpAsState(
+        targetValue = if (isSubNavigation) 32.dp else 16.dp
+    )
+
+    val animatedBottomRounded by animateDpAsState(
+        targetValue = if (isSubNavigation) 32.dp else 0.dp
+    )
+
+    val animatedBottomPadding by animateDpAsState(
+        targetValue = if (isSubNavigation) 5.dp else 10.dp
+    )
+
+    val shape = RoundedCornerShape(
+        topStart = animatedTopRounded,
+        topEnd = animatedTopRounded,
+        bottomStart = animatedBottomRounded,
+        bottomEnd = animatedBottomRounded
     )
 
     val backgroundColor = if (isSubNavigation) Color.Unspecified else BottomNavigationDefault.backgroundColor()
@@ -60,19 +79,24 @@ fun BottomNavigation(
         modifier = modifier
             .padding(animatedMargin)
             .background(
-                color = backgroundColor
+                color = backgroundColor,
+                shape = shape
             )
-            .windowInsetsPadding(WindowInsets.navigationBars)
+            .border(
+                width = 1.dp,
+                color = BottomNavigationDefault.borderColor(),
+                shape = shape
+            )
+            .windowInsetsPadding(WindowInsets.navigationBars),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(
-                    color = BottomNavigationDefault.backgroundColor(),
-                    shape = RoundedCornerShape(animatedRounded)
-                )
-                .padding(vertical = 2.dp),
+                .padding(
+                    top = 5.dp,
+                    bottom = animatedBottomPadding
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -100,6 +124,11 @@ object BottomNavigationDefault {
     @Composable
     fun backgroundColor(): Color {
         return if (isSystemInDarkTheme()) TabooBlack900 else Color.White
+    }
+
+    @Composable
+    fun borderColor(): Color {
+        return if (isSystemInDarkTheme()) TabooOpacityWhiteW5 else TabooOpacityGrayG5
     }
 }
 
@@ -200,7 +229,7 @@ fun BottomNavigationPreviews() {
 @Composable
 fun HomeScreenExample() {
     Box(
-        modifier = Modifier.background(color = TabooRed600)
+        modifier = Modifier.background(color = if (isSystemInDarkTheme()) TabooBlack900 else White)
     ) {
         Text(text = "HOME")
     }
@@ -209,7 +238,7 @@ fun HomeScreenExample() {
 @Composable
 fun StarScreenExample() {
     Box(
-        modifier = Modifier.background(color = TabooRed600)
+        modifier = Modifier.background(color = White)
     ) {
         Text(text = "STAR")
     }
@@ -218,7 +247,7 @@ fun StarScreenExample() {
 @Composable
 fun FavoriteScreenExample() {
     Box(
-        modifier = Modifier.background(color = TabooRed600)
+        modifier = Modifier.background(color = White)
     ) {
         Text(text = "FAVORITE")
     }
