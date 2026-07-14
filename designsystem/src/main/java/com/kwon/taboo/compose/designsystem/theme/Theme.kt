@@ -19,7 +19,9 @@ val LightDefaultColorScheme = lightColorScheme(
     tertiary = TabooGray600,
     onTertiary = TabooGray200,
     error = TabooRed600,
-    onError = White
+    onError = White,
+    background = Color.White,
+    onBackground = TabooBlack900
 )
 
 /**
@@ -33,7 +35,9 @@ val DarkDefaultColorScheme = darkColorScheme(
     tertiary = Color.Transparent,
     onTertiary = White,
     error = TabooRed600,
-    onError = White
+    onError = White,
+    background = Color.Black,
+    onBackground = White
 )
 
 /**
