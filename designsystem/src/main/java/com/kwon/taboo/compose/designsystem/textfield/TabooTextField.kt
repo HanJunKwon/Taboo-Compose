@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -19,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicSecureTextField
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.InputTransformation
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.TextObfuscationMode
@@ -54,7 +54,9 @@ import com.kwon.taboo.compose.designsystem.theme.TabooGray600
 import com.kwon.taboo.compose.designsystem.theme.TabooGray700
 import com.kwon.taboo.compose.designsystem.theme.TabooGray800
 import com.kwon.taboo.compose.designsystem.theme.TabooGray900
+import com.kwon.taboo.compose.designsystem.theme.TabooRed600
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
+import com.kwon.taboo.compose.designsystem.theme.TabooTypography
 
 
 @Composable
@@ -68,9 +70,12 @@ fun TabooTextField(
     colors: TabooTextFieldColors = TabooTextFieldDefaults.colors(),
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    inputTransformation: InputTransformation? = null,
     isPassword: Boolean = false,
     showPassword: Boolean = false,
-    readOnly: Boolean = false
+    readOnly: Boolean = false,
+    isError: Boolean = false,
+    errorMessage: String = ""
 ) {
     when (variant) {
         TabooTextFieldVariant.BOX -> TabooBoxTextField(
@@ -82,9 +87,12 @@ fun TabooTextField(
             colors,
             enabled,
             keyboardOptions,
+            inputTransformation,
             isPassword,
             showPassword,
-            readOnly
+            readOnly,
+            isError,
+            errorMessage
         )
         TabooTextFieldVariant.LINE -> TabooLineTextField(
             modifier,
@@ -95,9 +103,12 @@ fun TabooTextField(
             colors,
             enabled,
             keyboardOptions,
+            inputTransformation,
             isPassword,
             showPassword,
-            readOnly
+            readOnly,
+            isError,
+            errorMessage
         )
     }
 }
@@ -112,9 +123,12 @@ fun TabooBoxTextField(
     colors: TabooTextFieldColors,
     enabled: Boolean,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    inputTransformation: InputTransformation?,
     isPassword: Boolean,
     showPassword: Boolean,
-    readOnly: Boolean
+    readOnly: Boolean,
+    isError: Boolean,
+    errorMessage: String
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused = interactionSource.collectIsFocusedAsState().value
@@ -201,6 +215,7 @@ fun TabooBoxTextField(
                         state = state,
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = keyboardOptions,
+                        inputTransformation = inputTransformation,
                         decorator = { innerTextField ->
                             if (state.text.isEmpty()) {
 
@@ -225,6 +240,14 @@ fun TabooBoxTextField(
                         readOnly = readOnly
                     )
                 }
+            }
+
+            if (isError) {
+                Text(
+                    text = errorMessage,
+                    style = TabooTypography.bodySmall,
+                    color = TabooRed600
+                )
             }
         }
 
@@ -254,9 +277,12 @@ fun TabooLineTextField(
     colors: TabooTextFieldColors = TabooTextFieldDefaults.colors(),
     enabled: Boolean,
     keyboardOptions: KeyboardOptions,
+    inputTransformation: InputTransformation?,
     isPassword: Boolean,
     showPassword: Boolean,
-    readOnly: Boolean
+    readOnly: Boolean,
+    isError: Boolean,
+    errorMessage: String
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused = interactionSource.collectIsFocusedAsState().value
@@ -352,6 +378,7 @@ fun TabooLineTextField(
                         state = state,
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
                         keyboardOptions = keyboardOptions,
+                        inputTransformation = inputTransformation,
                         decorator = { innerTextField ->
                             if (state.text.isEmpty()) {
 
@@ -375,6 +402,14 @@ fun TabooLineTextField(
                         interactionSource = interactionSource
                     )
                 }
+            }
+
+            if (isError) {
+                Text(
+                    text = errorMessage,
+                    style = TabooTypography.bodySmall,
+                    color = TabooRed600
+                )
             }
         }
 
@@ -575,7 +610,21 @@ fun TabooTextFieldVariantBoxPreviews() {
                     },
                     title = "타이틀",
                     placeHolder = "내용을 입력해주세요.",
-                    readOnly = true
+                    readOnly = true,
+                    isError = true,
+                    errorMessage = "에러 메세지입니다."
+                )
+
+                TabooTextField(
+                    state = textState,
+                    onClick = {
+                        Log.d(">>>", "Click")
+                    },
+                    title = "타이틀",
+                    placeHolder = "내용을 입력해주세요.",
+                    readOnly = true,
+                    isError = true,
+                    errorMessage = "에러 메세지입니다."
                 )
             }
         }
