@@ -1,6 +1,8 @@
 package com.kwon.taboo.compose.designsystem.table
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,21 +14,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.theme.TabooBlack700
-import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
+import com.kwon.taboo.compose.designsystem.theme.TabooBlue600
 import com.kwon.taboo.compose.designsystem.theme.TabooGray500
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
+import com.kwon.taboo.compose.designsystem.theme.TabooTypography
 
 @Composable
 fun TabooTableRow(
     left: String,
     right: String,
-    rightTextAlign: TextAlign = TextAlign.End
+    rightTextAlign: TextAlign = TextAlign.End,
+    rightOption: TabooTableRowOption = TabooTableRowOption(),
+    leftTextStyle: TextStyle = TabooTypography.bodyMedium,
+    rightTextStyle: TextStyle = TabooTypography.bodyMedium
 ) {
     Row(
         modifier = Modifier
@@ -39,25 +44,30 @@ fun TabooTableRow(
     ) {
         Text(
             text = left,
-            color = TabooTableRowDefaults.defaultLeftTextColor(),
-            style = TextStyle(
-                fontFamily = TabooFontFamily,
-                fontWeight = FontWeight.Normal
-            )
+            style = leftTextStyle
         )
 
         Spacer(modifier = Modifier.width(10.dp))
 
-        Text(
-            text = right,
-            color = TabooTableRowDefaults.defaultRightTextColor(),
-            modifier = Modifier.fillMaxWidth(1f),
-            textAlign = rightTextAlign,
-            style = TextStyle(
-                fontFamily = TabooFontFamily,
-                fontWeight = FontWeight.Normal
+        val rightTextModifier = if (rightOption.isMarquee) {
+            Modifier.basicMarquee(
+                iterations = Int.MAX_VALUE,
             )
-        )
+        } else {
+            Modifier
+        }
+
+        Column(
+            modifier = Modifier.fillMaxWidth(1f)
+        ) {
+            Text(
+                text = right,
+                modifier = rightTextModifier.fillMaxWidth(1f).align(Alignment.End),
+                textAlign = rightTextAlign,
+                maxLines = if (rightOption.isMarquee) 1 else Int.MAX_VALUE,
+                style = rightTextStyle
+            )
+        }
     }
 }
 
@@ -95,6 +105,14 @@ fun TabooTableRowPreview() {
                     left = "기안일",
                     right = "2026.01.05",
                     rightTextAlign = TextAlign.Start
+                )
+
+                TabooTableRow(
+                    left = "기안일",
+                    right = "2026.01.05",
+                    rightTextAlign = TextAlign.Start,
+                    rightOption = TabooTableRowOption(isMarquee = true),
+                    rightTextStyle = TabooTypography.bodyMedium.copy(color = TabooBlue600)
                 )
             }
         }
