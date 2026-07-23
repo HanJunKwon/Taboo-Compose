@@ -47,13 +47,14 @@ object TabooListRow {
     operator fun invoke(
         modifier: Modifier = Modifier,
         onClick: () -> Unit,
+        enabled: Boolean = true,
         verticalPadding: VerticalPadding = VerticalPadding.MEDIUM,
         horizontalPadding: HorizontalPadding = HorizontalPadding.SMALL,
         left: Asset? = null,
         leftIconShape: IconShape = IconShape.ORIGINAL,
         header: (@Composable () -> Unit),
         description: (@Composable () -> Unit)? = null,
-        right: (@Composable () -> Unit)? = null,
+        right: (@Composable () -> Unit)? = null
     ) {
         val interactionSource = remember { MutableInteractionSource() }
         val isPressed = interactionSource.collectIsPressedAsState().value
@@ -63,7 +64,8 @@ object TabooListRow {
                 .fillMaxWidth()
                 .scalePointerInput(
                     onClick = onClick,
-                    interactionSource = interactionSource
+                    interactionSource = interactionSource,
+                    enabled = enabled
                 )
                 .background(
                     color = backgroundColor(isPressed),
