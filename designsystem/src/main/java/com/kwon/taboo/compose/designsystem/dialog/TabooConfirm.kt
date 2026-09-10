@@ -24,8 +24,11 @@ import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.button.TabooButton
 import com.kwon.taboo.compose.designsystem.button.TabooButtonColors
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
+import com.kwon.taboo.compose.designsystem.theme.TabooGray100
 import com.kwon.taboo.compose.designsystem.theme.TabooGray200
+import com.kwon.taboo.compose.designsystem.theme.TabooGray300
 import com.kwon.taboo.compose.designsystem.theme.TabooGray600
+import com.kwon.taboo.compose.designsystem.theme.TabooOpacityWhiteW46
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 
 @Composable
@@ -122,8 +125,8 @@ object TabooConfirmDefault {
         contentColor = if (isSystemInDarkTheme()) Color.White else TabooGray600,
         pressedContainerColor = if (isSystemInDarkTheme()) Color.Unspecified else TabooGray200,
         pressedContentColor = if (isSystemInDarkTheme()) Color.Unspecified else TabooGray600,
-        disableContainerColor = Color.Unspecified,
-        disableContentColor = Color.Unspecified
+        disableContainerColor = if (isSystemInDarkTheme()) Color.Unspecified else TabooGray100,
+        disableContentColor = if (isSystemInDarkTheme()) TabooOpacityWhiteW46 else TabooGray300
     )
 }
 

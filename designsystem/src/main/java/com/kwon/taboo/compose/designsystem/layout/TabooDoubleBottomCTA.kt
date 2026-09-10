@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,8 +60,7 @@ fun TabooDoubleBottomCTA(
                     )
                 },
                 colors = TabooConfirmDefault.cancelButtonColors(),
-                enabled = !isLoading,
-                isLoading = isLoading
+                enabled = !isLoading
             )
 
             TabooButton(
@@ -87,7 +85,7 @@ fun TabooDoubleBottomCTA(
 
 @ThemePreviews
 @Composable
-private fun TabooSingleBottomCTAPreviews() {
+private fun TabooDoubleBottomCTAPreviews() {
     TabooTheme {
         TabooBackground {
             TabooDoubleBottomCTA(
