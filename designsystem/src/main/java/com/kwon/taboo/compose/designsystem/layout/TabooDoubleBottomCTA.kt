@@ -35,6 +35,7 @@ fun TabooDoubleBottomCTA(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     isFill: Boolean = true,
+    confirmEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     Column(modifier = modifier) {
@@ -76,7 +77,7 @@ fun TabooDoubleBottomCTA(
                         )
                     )
                 },
-                enabled = !isLoading,
+                enabled = !isLoading && confirmEnabled,
                 isLoading = isLoading
             )
         }
@@ -96,7 +97,9 @@ private fun TabooDoubleBottomCTAPreviews() {
                 confirmText = "확인",
                 onClickConfirm = {
 
-                }
+                },
+                isLoading = false,
+                confirmEnabled = false
             ) {
                 CompositionLocalProvider(LocalOverscrollFactory provides null) {
                     LazyColumn(
