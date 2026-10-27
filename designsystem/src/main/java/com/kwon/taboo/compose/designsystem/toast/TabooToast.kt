@@ -26,21 +26,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.button.TabooButton
-import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
+import com.kwon.taboo.compose.designsystem.theme.TabooGray700
 import com.kwon.taboo.compose.designsystem.theme.TabooGray800
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 import kotlinx.coroutines.launch
@@ -64,6 +65,8 @@ fun TabooToast(
     toastHeight: Dp = 40.dp,
     animateDuration: Int = TabooToastDefaults.animationDuration()
 ) {
+    val shape = TabooToastDefaults.backgroundShape(variant)
+
     Box(
         modifier = Modifier.fillMaxSize().safeDrawingPadding()
     ) {
@@ -101,9 +104,24 @@ fun TabooToast(
                 modifier = Modifier
                     .wrapContentWidth()
                     .padding(vertical = toastHeight)
-                    .shadow(
-                        elevation = 3.dp,
-                        shape = TabooToastDefaults.backgroundShape(variant)
+                    .dropShadow(
+                        shape = shape,
+                        shadow = Shadow(
+                            radius = 20.dp,
+                            spread = 0.dp,
+                            color = Color(0xFF191F28).copy(alpha = 0.12f),
+                            offset = DpOffset(x = 0.dp, y = 6.dp),
+                        ),
+                    )
+                    // 배경 가까이에 생기는 작은 그림자
+                    .dropShadow(
+                        shape = shape,
+                        shadow = Shadow(
+                            radius = 5.dp,
+                            spread = 0.dp,
+                            color = Color(0xFF191F28).copy(alpha = 0.04f),
+                            offset = DpOffset(x = 0.dp, y = 2.dp),
+                        ),
                     )
                     .background(
                         color = TabooToastDefaults.backgroundColor(),
@@ -161,7 +179,7 @@ object TabooToastDefaults {
     fun backgroundColor() = if (isSystemInDarkTheme()) TabooGray800 else Color.White
 
     @Composable
-    fun textColor() = if (isSystemInDarkTheme()) Color.White else TabooBlack900
+    fun textColor() = if (isSystemInDarkTheme()) Color.White else TabooGray700
 }
 
 
