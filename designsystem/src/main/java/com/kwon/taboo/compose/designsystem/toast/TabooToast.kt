@@ -2,6 +2,8 @@ package com.kwon.taboo.compose.designsystem.toast
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
@@ -11,29 +13,28 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.kwon.taboo.compose.designsystem.R
 import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
@@ -42,66 +43,95 @@ import com.kwon.taboo.compose.designsystem.theme.TabooBlack900
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooGray800
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+/**
+ * @param state 토스트의 상태 정보. 토스트의 `message`와 `visible` 상태를 관리.
+ * @param variant 토스트의 모양을 결정. `ROUNDED`는 둥근 모양, `CIRCLE`은 원형 모양.
+ * @param icon 토스트에 표시할 이미지 리소스
+ * @param text 토스트에 표시할 텍스트
+ * @param position 토스트를 표시할 위치. `TOP`은 상단에 표시, `BOTTOM`은 하단에 표시.
+ * @param toastHeight 토스트가 표시될 높이. 기본값은 40.dp
+ * @param animateDuration 토스트의 애니메이션 지속 시간. 기본값은 250
+ */
 @Composable
 fun TabooToast(
+    state: TabooToastState,
     variant: TabooToastVariant = TabooToastVariant.ROUNDED,
     icon: Painter? = null,
     text: String,
-    duration: Long = 1_500L,
-    isVisible: Boolean = false
+    position: TabooToastPosition = TabooToastPosition.BOTTOM,
+    toastHeight: Dp = 40.dp,
+    animateDuration: Int = TabooToastDefaults.animationDuration()
 ) {
-
-    AnimatedVisibility(
-        visible = isVisible,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.Transparent)
-            .zIndex(100f),
-        enter = slideInVertically(
-            initialOffsetY = { -it },
-            animationSpec = tween(durationMillis = TabooToastDefaults.animationDuration())
-        ),
-        exit = slideOutVertically(
-            targetOffsetY = { -it },
-            animationSpec = tween(durationMillis = TabooToastDefaults.animationDuration())
-        )
+    Box(
+        modifier = Modifier.fillMaxSize().safeDrawingPadding()
     ) {
-        Box(
+        AnimatedVisibility(
+            visible = state.isVisible,
             modifier = Modifier
-                .wrapContentWidth()
-                .padding(16.dp)
-                .shadow(
-                    elevation = 5.dp,
-                    shape = TabooToastDefaults.backgroundShape(variant)
+                .background(color = Color.Transparent)
+                .align(
+                    when (position) {
+                        TabooToastPosition.TOP -> Alignment.TopCenter
+                        TabooToastPosition.BOTTOM -> Alignment.BottomCenter
+                    }
                 )
-                .background(
-                    color = TabooToastDefaults.backgroundColor(),
-                    shape = TabooToastDefaults.backgroundShape(variant)
-                )
-                .padding(14.dp),
-            contentAlignment = Alignment.Center
+            ,
+            enter = slideInVertically(
+                initialOffsetY = {
+                    when (position) {
+                        TabooToastPosition.TOP -> -it
+                        TabooToastPosition.BOTTOM -> it
+                    }
+                },
+                animationSpec = tween(durationMillis = animateDuration)
+            ) + fadeIn(initialAlpha = 0.3f),
+            exit = slideOutVertically(
+                targetOffsetY = {
+                    when (position) {
+                        TabooToastPosition.TOP -> -it
+                        TabooToastPosition.BOTTOM -> it
+                    }
+                },
+                animationSpec = tween(durationMillis = animateDuration)
+            ) + fadeOut(targetAlpha = 0.3f)
         ) {
-            Row {
-                if (icon != null) {
-                    Image(
-                        painter = icon,
-                        contentDescription = "",
-                        modifier = Modifier.size(24.dp)
+            Box(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .padding(vertical = toastHeight)
+                    .shadow(
+                        elevation = 3.dp,
+                        shape = TabooToastDefaults.backgroundShape(variant)
                     )
-                    Spacer(modifier = Modifier.width(15.dp))
-                }
+                    .background(
+                        color = TabooToastDefaults.backgroundColor(),
+                        shape = TabooToastDefaults.backgroundShape(variant)
+                    )
+                    .padding(14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Row {
+                    if (icon != null) {
+                        Image(
+                            painter = icon,
+                            contentDescription = "",
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(15.dp))
+                    }
 
-                Text(
-                    modifier = Modifier.wrapContentWidth(),
-                    text = text,
-                    color = TabooToastDefaults.textColor(),
-                    style = TextStyle(
-                        fontFamily = TabooFontFamily,
-                        fontWeight = FontWeight.SemiBold
+                    Text(
+                        modifier = Modifier.wrapContentWidth(),
+                        text = text,
+                        color = TabooToastDefaults.textColor(),
+                        style = TextStyle(
+                            fontFamily = TabooFontFamily,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -140,27 +170,49 @@ object TabooToastDefaults {
 private fun TabooToastPreviews1() {
     TabooTheme {
         TabooBackground {
-            var isToastVisible by remember { mutableStateOf(false) }
+            val bottomToast = remember { TabooToastState() }
+            val topToast = remember { TabooToastState() }
+            val coroutine = rememberCoroutineScope()
 
-            LaunchedEffect(isToastVisible) {
-                if (isToastVisible) {
-                    delay(1_500)
-                    isToastVisible = false
-                }
+            Column(modifier = Modifier.fillMaxSize()) {
+                TabooButton(
+                    onClick = {
+                        coroutine.launch {
+                            bottomToast.show(
+                                newMessage = "토스트 메세지를 입력해주세요."
+                            )
+                        }
+                    },
+                    text = {
+                        Text(text = "Show Bottom Slide Toast")
+                    }
+                )
+
+                TabooButton(
+                    onClick = {
+                        coroutine.launch {
+                            topToast.show(
+                                newMessage = "토스트 메세지를 입력해주세요."
+                            )
+                        }
+                    },
+                    text = {
+                        Text(text = "Show Top Slide Toast")
+                    }
+                )
             }
 
             TabooToast(
+                state = topToast,
                 text = "토스트 메세지를 입력해주세요.",
-                isVisible = isToastVisible
+                position = TabooToastPosition.TOP
             )
 
-            TabooButton(
-                onClick = {
-                    isToastVisible = true
-                },
-                text = {
-                    Text(text = "Show Slide Toast")
-                }
+            TabooToast(
+                state = bottomToast,
+                text = "토스트 메세지를 입력해주세요.",
+                position = TabooToastPosition.BOTTOM,
+                animateDuration = 500
             )
         }
     }
@@ -171,28 +223,30 @@ private fun TabooToastPreviews1() {
 private fun TabooToastPreview2() {
     TabooTheme {
         TabooBackground {
+            val toastState = remember { TabooToastState() }
+
             Column {
                 TabooToast(
-                    text = "토스트 메세지를 입력해주세요.",
-                    isVisible = true
+                    state = toastState,
+                    text = "토스트 메세지를 입력해주세요."
                 )
 
                 TabooToast(
+                    state = toastState,
                     variant = TabooToastVariant.CIRCLE,
-                    text = "토스트 메세지를 입력해주세요.",
-                    isVisible = true
+                    text = "토스트 메세지를 입력해주세요."
                 )
 
                 TabooToast(
+                    state = toastState,
                     text = "토스트 메세지를 입력해주세요.",
-                    isVisible = true,
                     icon = painterResource(R.drawable.ic_important)
                 )
 
                 TabooToast(
+                    state = toastState,
                     variant = TabooToastVariant.CIRCLE,
                     text = "토스트 메세지를 입력해주세요.",
-                    isVisible = true,
                     icon = painterResource(R.drawable.ic_important)
                 )
             }
