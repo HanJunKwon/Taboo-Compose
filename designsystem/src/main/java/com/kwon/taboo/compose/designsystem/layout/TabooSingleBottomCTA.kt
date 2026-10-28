@@ -47,6 +47,7 @@ fun TabooSingleBottomCTA(
     isLoading: Boolean = false,
     isFill: Boolean = true,
     buttonVisible: Boolean = true,
+    buttonEnabled: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val density = LocalDensity.current
@@ -82,7 +83,7 @@ fun TabooSingleBottomCTA(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
-                enabled = !isLoading,
+                enabled = !isLoading && buttonEnabled,
                 isLoading = isLoading
             )
         }
@@ -108,7 +109,8 @@ private fun TabooSingleBottomCTAPreviews() {
                 onClick = {
 
                 },
-                buttonVisible = visible,
+                buttonEnabled = true,
+                isLoading = true,
                 modifier = Modifier.fillMaxWidth().fillMaxHeight()
             ) {
                 LazyColumn(
