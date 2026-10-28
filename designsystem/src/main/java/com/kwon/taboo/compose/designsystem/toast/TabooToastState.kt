@@ -16,7 +16,10 @@ class TabooToastState {
     var message by mutableStateOf("")
         private set
 
-    suspend fun show(newMessage: String, duration: Duration = 3_000.milliseconds) {
+    suspend fun show(
+        newMessage: String,
+        duration: Duration = 3_000.milliseconds
+    ) {
         if (isVisible) {
             isVisible = false
             delay(100.milliseconds)

@@ -59,9 +59,8 @@ import kotlinx.coroutines.launch
 fun TabooToast(
     state: TabooToastState,
     variant: TabooToastVariant = TabooToastVariant.ROUNDED,
-    icon: Painter? = null,
-    text: String,
     position: TabooToastPosition = TabooToastPosition.BOTTOM,
+    icon: Painter? = null,
     toastHeight: Dp = 40.dp,
     animateDuration: Int = TabooToastDefaults.animationDuration()
 ) {
@@ -142,7 +141,7 @@ fun TabooToast(
 
                     Text(
                         modifier = Modifier.wrapContentWidth(),
-                        text = text,
+                        text = state.message,
                         color = TabooToastDefaults.textColor(),
                         style = TextStyle(
                             fontFamily = TabooFontFamily,
@@ -196,21 +195,8 @@ private fun TabooToastPreviews1() {
                 TabooButton(
                     onClick = {
                         coroutine.launch {
-                            bottomToast.show(
-                                newMessage = "토스트 메세지를 입력해주세요."
-                            )
-                        }
-                    },
-                    text = {
-                        Text(text = "Show Bottom Slide Toast")
-                    }
-                )
-
-                TabooButton(
-                    onClick = {
-                        coroutine.launch {
                             topToast.show(
-                                newMessage = "토스트 메세지를 입력해주세요."
+                                newMessage = "상단 토스트 메세지"
                             )
                         }
                     },
@@ -218,17 +204,28 @@ private fun TabooToastPreviews1() {
                         Text(text = "Show Top Slide Toast")
                     }
                 )
+
+                TabooButton(
+                    onClick = {
+                        coroutine.launch {
+                            bottomToast.show(
+                                newMessage = "하단 토스트 메세지"
+                            )
+                        }
+                    },
+                    text = {
+                        Text(text = "Show Bottom Slide Toast")
+                    }
+                )
             }
 
             TabooToast(
                 state = topToast,
-                text = "토스트 메세지를 입력해주세요.",
                 position = TabooToastPosition.TOP
             )
 
             TabooToast(
                 state = bottomToast,
-                text = "토스트 메세지를 입력해주세요.",
                 position = TabooToastPosition.BOTTOM,
                 animateDuration = 500
             )
@@ -246,25 +243,21 @@ private fun TabooToastPreview2() {
             Column {
                 TabooToast(
                     state = toastState,
-                    text = "토스트 메세지를 입력해주세요."
                 )
 
                 TabooToast(
                     state = toastState,
                     variant = TabooToastVariant.CIRCLE,
-                    text = "토스트 메세지를 입력해주세요."
                 )
 
                 TabooToast(
                     state = toastState,
-                    text = "토스트 메세지를 입력해주세요.",
                     icon = painterResource(R.drawable.ic_important)
                 )
 
                 TabooToast(
                     state = toastState,
                     variant = TabooToastVariant.CIRCLE,
-                    text = "토스트 메세지를 입력해주세요.",
                     icon = painterResource(R.drawable.ic_important)
                 )
             }
