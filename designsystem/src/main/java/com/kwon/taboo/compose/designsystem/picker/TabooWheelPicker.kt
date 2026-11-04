@@ -4,14 +4,13 @@ import android.util.Log
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,8 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -77,37 +76,36 @@ fun TabooWheelPicker(
         onItemSelected(selectedIndex)
     }
 
-    Box(modifier = modifier) {
-        LazyColumn(
-            modifier = Modifier
-                .height(itemHeight * displayItemCount)
-                .wrapContentWidth()
-            ,
-            userScrollEnabled = enabled,
-            state = lazyListState,
-            flingBehavior = snapFlingBehavior,
-            contentPadding = PaddingValues(vertical = itemHeight * (displayItemCount / 2))
-        ) {
-            itemsIndexed(items = contents, key = { _, content -> content }) { index, content ->
-                Text(
-                    modifier = Modifier.height(itemHeight),
-                    text = content,
-                    color = if (index == selectedIndex) {
-                        if (enabled) {
-                            colors.selectedTextColor
-                        } else {
-                            colors.disabledSelectedTextColor
-                        }
+    LazyColumn(
+        modifier = modifier
+            .height(itemHeight * displayItemCount)
+        ,
+        userScrollEnabled = enabled,
+        state = lazyListState,
+        flingBehavior = snapFlingBehavior,
+        contentPadding = PaddingValues(vertical = itemHeight * (displayItemCount / 2)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        overscrollEffect = null
+    ) {
+        itemsIndexed(items = contents, key = { _, content -> content }) { index, content ->
+            Text(
+                modifier = Modifier.height(itemHeight).padding(horizontal = 20.dp),
+                text = content,
+                color = if (index == selectedIndex) {
+                    if (enabled) {
+                        colors.selectedTextColor
                     } else {
-                        if (enabled) {
-                            colors.textColor
-                        } else {
-                            colors.disabledTextColor
-                        }
-                    },
-                    style = textStyle
-                )
-            }
+                        colors.disabledSelectedTextColor
+                    }
+                } else {
+                    if (enabled) {
+                        colors.textColor
+                    } else {
+                        colors.disabledTextColor
+                    }
+                },
+                style = textStyle
+            )
         }
     }
 }
@@ -147,10 +145,11 @@ fun TabooWheelPickerPreviews() {
         TabooBackground {
             Surface(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
                 Row(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     TabooWheelPicker(
-                        modifier = Modifier,
+                        modifier = Modifier.weight(1f),
                         displayItemCount = 5,
                         initialFirstVisibleItemIndex = 1,
                         contents = listOf("2000년","2001년","2002년","2003년","2004년","2005년","2006년","2007년","2008년","2009년","2010년","2011년")
@@ -159,7 +158,7 @@ fun TabooWheelPickerPreviews() {
                     }
 
                     TabooWheelPicker(
-                        modifier = Modifier,
+                        modifier = Modifier.weight(1f),
                         displayItemCount = 5,
                         contents = listOf("1월","2월","3월","4월","6월","7월","8월","9월","10월","11월","12월")
                     ) { index ->
@@ -167,7 +166,7 @@ fun TabooWheelPickerPreviews() {
                     }
 
                     TabooWheelPicker(
-                        modifier = Modifier,
+                        modifier = Modifier.weight(1f),
                         enabled = false,
                         displayItemCount = 5,
                         contents = listOf("1일", "2일", "3일", "4일", "5일", "6일")
