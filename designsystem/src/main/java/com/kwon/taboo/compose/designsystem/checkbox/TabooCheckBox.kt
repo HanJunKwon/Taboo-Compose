@@ -229,6 +229,26 @@ private fun TabooCheckBoxCirclePreview() {
                     },
                     isChecked = true
                 )
+
+                TabooCheckBox(
+                    content = {
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(3.dp)
+                        ) {
+                            Text(text= "제목")
+                            Text(
+                                text = "내용",
+                                style = TextStyle(
+                                    fontFamily = TabooFontFamily,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Normal
+                                )
+                            )
+                        }
+                    },
+                    variant = TabooCheckBoxVariant.LINE,
+                    isChecked = true
+                )
             }
         }
     }
