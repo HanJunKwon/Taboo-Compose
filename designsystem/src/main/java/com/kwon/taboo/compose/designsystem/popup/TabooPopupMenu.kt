@@ -3,10 +3,8 @@ package com.kwon.taboo.compose.designsystem.popup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
@@ -16,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
@@ -36,24 +36,26 @@ import com.kwon.taboo.compose.designsystem.theme.TabooTheme
 fun TabooPopupMenu(
     state: TabooPopupMenuState,
     colors: TabooPopupMenuColors = TabooPopupMenuDefault.getDefaultColors(),
+    offset: DpOffset = DpOffset.Zero,
     onDismissRequest: () -> Unit,
     content: @Composable () -> Unit
 ) {
     val shadowClipPadding = 25.dp
+    val density = LocalDensity.current
+
+    val popupOffset = with(density) {
+        IntOffset(
+            x = (offset.x - shadowClipPadding).roundToPx(),
+            y = (offset.y - shadowClipPadding).roundToPx()
+        )
+    }
 
     Popup(
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        offset = popupOffset
     ) {
         AnimatedVisibility(
             visible = state.isVisible,
-            modifier = Modifier
-                .offset(
-                    x = -shadowClipPadding,
-                    y = -shadowClipPadding
-                )
-                .background(
-                    color = Color.Transparent
-                )
         ) {
             Column(
                 modifier = Modifier
@@ -101,21 +103,31 @@ object TabooPopupMenuDefault {
 
 @ThemePreviews
 @Composable
-fun TabooPopupMenuPreviews() {
+fun TabooPopupMenuDirectionPreviews() {
     val popupMenuState = remember { TabooPopupMenuState() }
+    val popupMenuOffsetState = remember { TabooPopupMenuState() }
 
     TabooTheme() {
         TabooBackground {
-            Box(
+            Column(
                 modifier = Modifier.fillMaxSize()
             ) {
                 TabooButton(
                     onClick = { popupMenuState.show() },
                     text = {
-                        Text(text = "팝업 열기")
+                        Text(text = "Offset 좌측 팝업 열기")
+                    }
+                )
+
+                TabooButton(
+                    onClick = { popupMenuOffsetState.show() },
+                    text = {
+                        Text(text = "Offset 우측 팝업 열기")
                     }
                 )
             }
+
+
             TabooPopupMenu(
                 state = popupMenuState,
                 onDismissRequest = {
@@ -167,6 +179,59 @@ fun TabooPopupMenuPreviews() {
                     }
                 )
             }
+        }
+
+        TabooPopupMenu(
+            state = popupMenuOffsetState,
+            offset = DpOffset(100.dp, 100.dp),
+            onDismissRequest = {
+                popupMenuOffsetState.dismiss()
+            }
+        ) {
+            TabooListRow(
+                onClick = { popupMenuOffsetState.dismiss() },
+                header = {
+                    Text(
+                        text = "아이템 1",
+                        style = TextStyle(
+                            fontFamily = TabooFontFamily,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = TabooGray800
+                        )
+                    )
+                }
+            )
+
+            TabooListRow(
+                onClick = { popupMenuOffsetState.dismiss() },
+                header = {
+                    Text(
+                        text = "아이템 2",
+                        style = TextStyle(
+                            fontFamily = TabooFontFamily,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = TabooGray800
+                        )
+                    )
+                }
+            )
+
+            TabooListRow(
+                onClick = { popupMenuOffsetState.dismiss() },
+                header = {
+                    Text(
+                        text = "아이템 3",
+                        style = TextStyle(
+                            fontFamily = TabooFontFamily,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = TabooGray800
+                        )
+                    )
+                }
+            )
         }
     }
 }
