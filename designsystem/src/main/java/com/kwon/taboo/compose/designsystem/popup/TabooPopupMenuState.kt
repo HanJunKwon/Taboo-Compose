@@ -4,9 +4,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 
 @Stable
-class TabooPopupMenuState {
+class TabooPopupMenuState(
+    var alignment: Alignment = Alignment.TopStart
+) {
     var isVisible by mutableStateOf(false)
         private set
 

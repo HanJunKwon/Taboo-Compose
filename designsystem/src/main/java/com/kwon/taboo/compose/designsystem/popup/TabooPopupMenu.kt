@@ -1,6 +1,12 @@
 package com.kwon.taboo.compose.designsystem.popup
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -10,9 +16,11 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
@@ -52,10 +60,13 @@ fun TabooPopupMenu(
 
     Popup(
         onDismissRequest = onDismissRequest,
+        alignment = state.alignment,
         offset = popupOffset
     ) {
         AnimatedVisibility(
             visible = state.isVisible,
+            enter = TabooPopupMenuDefault.getEnterAnimation(alignment = state.alignment),
+            exit = TabooPopupMenuDefault.getExitAnimation(alignment = state.alignment)
         ) {
             Column(
                 modifier = Modifier
@@ -97,6 +108,37 @@ object TabooPopupMenuDefault {
         backgroundColor = getBackgroundColor()
     )
 
+    fun getEnterAnimation(alignment: Alignment) = fadeIn() + scaleIn(
+        initialScale = 0.8f,
+        transformOrigin = getTransformOrigin(alignment = alignment)
+    )
+
+    fun getExitAnimation(alignment: Alignment) = scaleOut(
+        targetScale = 0.8f,
+        transformOrigin = getTransformOrigin(alignment = alignment)
+    ) + fadeOut()
+
+    fun getTransformOrigin(alignment: Alignment) = TransformOrigin(
+        when (alignment) {
+            Alignment.TopStart -> 0f
+            Alignment.TopCenter -> 0.5f
+            Alignment.TopEnd -> 1f
+            Alignment.BottomStart -> 0f
+            Alignment.BottomCenter -> 0.5f
+            Alignment.BottomEnd -> 1f
+            else -> 0.5f
+        },
+        when (alignment) {
+            Alignment.TopStart -> 0f
+            Alignment.TopCenter -> 0f
+            Alignment.TopEnd -> 0f
+            Alignment.BottomStart -> 1f
+            Alignment.BottomCenter -> 0.5f
+            Alignment.BottomEnd -> 1f
+            else -> 0.5f
+        }
+    )
+
     @Composable
     private fun getBackgroundColor(): Color = if(isSystemInDarkTheme()) TabooBlack800 else Color.White
 }
@@ -104,8 +146,12 @@ object TabooPopupMenuDefault {
 @ThemePreviews
 @Composable
 fun TabooPopupMenuDirectionPreviews() {
-    val popupMenuState = remember { TabooPopupMenuState() }
-    val popupMenuOffsetState = remember { TabooPopupMenuState() }
+    val popupMenuState = remember { TabooPopupMenuState(
+        alignment = Alignment.BottomStart
+    ) }
+    val popupMenuOffsetState = remember { TabooPopupMenuState(
+        alignment = Alignment.BottomEnd
+    ) }
 
     TabooTheme() {
         TabooBackground {
