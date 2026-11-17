@@ -33,4 +33,8 @@ class TabooToastState {
 
         isVisible = false
     }
+
+    suspend fun dismiss() {
+        isVisible = false
+    }
 }
