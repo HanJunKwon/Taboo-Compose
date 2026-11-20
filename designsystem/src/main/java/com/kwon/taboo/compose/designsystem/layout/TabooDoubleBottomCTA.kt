@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -22,6 +23,7 @@ import com.kwon.taboo.compose.designsystem.TabooBackground
 import com.kwon.taboo.compose.designsystem.ThemePreviews
 import com.kwon.taboo.compose.designsystem.button.TabooButton
 import com.kwon.taboo.compose.designsystem.dialog.TabooConfirmDefault
+import com.kwon.taboo.compose.designsystem.verticalFadingEdge
 import com.kwon.taboo.compose.designsystem.theme.TabooFontFamily
 import com.kwon.taboo.compose.designsystem.theme.TabooRed600
 import com.kwon.taboo.compose.designsystem.theme.TabooTheme
@@ -38,8 +40,10 @@ fun TabooDoubleBottomCTA(
     confirmEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+    val scrollState = rememberScrollState()
+
     Column(modifier = modifier) {
-        Box(modifier = Modifier.fillMaxWidth().weight(1f, isFill)) {
+        Box(modifier = Modifier.fillMaxWidth().weight(1f, isFill).verticalFadingEdge(top = true, bottom = true)) {
             content()
         }
 
